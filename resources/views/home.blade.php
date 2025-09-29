@@ -16,12 +16,15 @@
 </section>
 
 <!-- Middle description -->
-<section class="text-center py-12 text-gray-600">
-    <p class="max-w-xl mx-auto">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-    </p>
-    <div class="mt-4 text-sm text-gray-500">
-        Lorem ipsum | Lorem ipsum | Lorem ipsum
-    </div>
+<section class="text-center py-12">
+  <p class="max-w-2xl mx-auto text-lg md:text-xl text-gray-700 leading-relaxed">
+    <span class="font-semibold text-gray-900">
+      Anxietive
+    </span> is a self photo studio where every smile, pose, 
+    and moment becomes a story worth keeping.
+  </p>
+  <div class="mt-6 text-xs md:text-sm text-gray-500 tracking-widest uppercase">
+    Self Photo &nbsp;|&nbsp; Authentic Moments &nbsp;|&nbsp; Anxietive Studio
+  </div>
 </section>
 @endsection

@@ -6,11 +6,21 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>@yield('title', 'anxietive')</title>
 
+    {{-- Google Fonts --}}
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
     {{-- Vite --}}
     @vite(['resources/css/app.css','resources/js/app.js'])
 
     {{-- allow views to push styles (Swiper CSS, custom CSS etc) --}}
     @stack('styles')
+
+    <style>
+        body {
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI",
+                "Helvetica Neue", Arial, sans-serif;
+        }
+    </style>
 </head>
 
 <body class="bg-white text-gray-900">
@@ -29,17 +39,21 @@
 
             <!-- Menu -->
             <nav id="menu"
-                class="hidden md:flex flex-col md:flex-row absolute md:static top-[72px] left-0 w-full md:w-auto bg-white md:bg-transparent shadow-md md:shadow-none space-y-4 md:space-y-0 md:space-x-8 font-bold px-6 md:px-0 py-4 md:py-0 transition-all duration-300">
+                class="hidden fixed inset-0 bg-white z-40 flex-col items-center justify-center space-y-8 text-lg md:static md:flex md:flex-row md:space-y-0 md:space-x-8 md:bg-transparent md:shadow-none font-medium">
+                
+                <!-- Tombol Close (mobile only) -->
+                <button id="menu-close" class="absolute top-6 right-6 text-3xl text-gray-700 md:hidden">✕</button>
+
                 <a href="{{ route('home') }}"
-                    class="{{ request()->routeIs('home') ? 'text-black font-bold' : 'text-gray-700 hover:text-black' }}">Home</a>
+                    class="{{ request()->routeIs('home') ? 'text-black font-medium' : 'text-gray-700 hover:text-black' }}">Home</a>
                 <a href="{{ route('about') }}"
-                    class="{{ request()->routeIs('about') ? 'text-black font-bold' : 'text-gray-700 hover:text-black' }}">About</a>
+                    class="{{ request()->routeIs('about') ? 'text-black font-medium' : 'text-gray-700 hover:text-black' }}">About</a>
                 <a href="{{ route('contact') }}"
-                    class="{{ request()->routeIs('contact') ? 'text-black font-bold' : 'text-gray-700 hover:text-black' }}">Contact</a>
+                    class="{{ request()->routeIs('contact') ? 'text-black font-medium' : 'text-gray-700 hover:text-black' }}">Contact</a>
                 <a href="{{ route('pricelist') }}"
-                    class="{{ request()->routeIs('pricelist') ? 'text-black font-bold' : 'text-gray-700 hover:text-black' }}">Pricelist</a>
+                    class="{{ request()->routeIs('pricelist') ? 'text-black font-medium' : 'text-gray-700 hover:text-black' }}">Pricelist</a>
                 <a href="{{ route('booking') }}"
-                    class="{{ request()->routeIs('booking') ? 'text-black font-bold' : 'text-gray-700 hover:text-black' }}">Booking</a>
+                    class="{{ request()->routeIs('booking') ? 'text-black font-medium' : 'text-gray-700 hover:text-black' }}">Booking</a>
             </nav>
         </div>
     </header>
@@ -81,19 +95,29 @@
     <!-- --- Place for page-specific scripts --- -->
     @stack('scripts')
 
-    <!-- Script: navbar + lightbox behaviour (robust) -->
+    <!-- Script: navbar + lightbox behaviour -->
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             // Navbar toggle
             const menuToggle = document.getElementById('menu-toggle');
+            const menu = document.getElementById('menu');
+            const menuClose = document.getElementById('menu-close');
+
             if (menuToggle) {
                 menuToggle.addEventListener('click', () => {
-                    const menu = document.getElementById('menu');
-                    menu.classList.toggle('hidden');
+                    menu.classList.remove('hidden');
+                    menu.classList.add('flex');
                 });
             }
 
-            // Lightbox (delegated, prevents default navigation)
+            if (menuClose) {
+                menuClose.addEventListener('click', () => {
+                    menu.classList.remove('flex');
+                    menu.classList.add('hidden');
+                });
+            }
+
+            // Lightbox
             (function () {
                 const lightbox = document.getElementById('lightbox');
                 const lbImage = document.getElementById('lb-image');
@@ -110,7 +134,7 @@
                 let current = 0;
 
                 function open(index) {
-                    images = getGalleryImages(); // refresh (in case DOM changed)
+                    images = getGalleryImages();
                     current = index;
                     lbImage.src = images[current];
                     lightbox.classList.remove('hidden');
@@ -123,11 +147,10 @@
                     lbImage.src = '';
                 }
 
-                // Click delegation: intercept clicks on gallery anchors or images
                 document.addEventListener('click', function (e) {
                     const galleryImg = e.target.closest('.gallery-item img');
                     if (galleryImg) {
-                        e.preventDefault(); // stop anchor navigation
+                        e.preventDefault();
                         const imgs = Array.from(document.querySelectorAll('.gallery-item img'));
                         const idx = imgs.indexOf(galleryImg);
                         if (idx !== -1) open(idx);
@@ -135,7 +158,6 @@
                     }
                 });
 
-                // Buttons
                 lbClose.addEventListener('click', close);
                 lbPrev.addEventListener('click', () => {
                     images = getGalleryImages();
@@ -148,7 +170,6 @@
                     lbImage.src = images[current];
                 });
 
-                // keyboard nav + backdrop click
                 document.addEventListener('keydown', function (e) {
                     if (!lightbox.classList.contains('flex')) return;
                     if (e.key === 'Escape') close();
@@ -157,13 +178,10 @@
                 });
 
                 lightbox.addEventListener('click', function (e) {
-                    // click on backdrop closes
                     if (e.target === lightbox) close();
                 });
             })();
         });
-
     </script>
 </body>
-
 </html>

@@ -14,7 +14,8 @@
             About
         </h1>
         <p class="mt-6 text-gray-600 leading-relaxed">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            Anxietive is a self photo studio built on the belief that every moment no matter how ordinary can be turned into something creative and meaningful. 
+            Inspired by the idea of transforming anxiety into art, we provide a space where you can be yourself and capture your truest expressions. 
         </p>
     </div>
 </section>
@@ -22,7 +23,7 @@
 <!-- SECTION 1: Image left, text right -->
 <section class="relative">
     <div class="grid grid-cols-1 md:grid-cols-12 min-h-[40rem]">
-        <!-- IMAGE 6 column left, full to edge -->
+        <!-- IMAGE -->
         <div class="col-span-12 md:col-span-6 relative order-1 md:order-1 h-64 md:h-full">
             <div class="absolute inset-0 w-full h-full overflow-hidden">
                 @if(isset($images[0]))
@@ -34,18 +35,19 @@
             </div>
         </div>
 
-        <!-- TEXT 6 column right, center vertically & horizontally -->
+        <!-- TEXT -->
         <div
             class="col-span-12 md:col-span-6 relative flex items-center justify-center py-12 md:py-0 order-2 md:order-2">
             <div class="text-center px-6 md:px-24 max-w-xl">
-                <h2 class="text-3xl md:text-4xl font-bold">Lorem ipsum</h2>
+                <h2 class="text-3xl md:text-4xl font-bold">From Anxiety to Creative</h2>
                 <p class="mt-6 text-gray-600 leading-relaxed">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed
-                    cursus ante dapibus diam. Sed nisi, nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum.
+                    The name “Anxietive” comes from the idea of turning nervousness into creativity. 
+                    We believe photography is more than just pictures it’s a way to embrace yourself, 
+                    overcome insecurities, and celebrate your individuality.
                 </p>
                 <p class="mt-4 text-gray-600 leading-relaxed">
-                    Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor, pellentesque nibh.
-                    Aenean quam. In scelerisque sem at dolor. Maecenas mattis sed convallis tristique sem proin.
+                    In every session, we want you to feel comfortable, free, and empowered to express who you really are. 
+                    That’s why our studio is designed for privacy, comfort, and authenticity.
                 </p>
             </div>
         </div>
@@ -55,23 +57,24 @@
 <!-- SECTION 2: Text left, image right -->
 <section class="relative">
     <div class="grid grid-cols-1 md:grid-cols-12 min-h-[40rem]">
-        <!-- TEXT 6 column left, center vertically & horizontally -->
+        <!-- TEXT -->
         <div
             class="col-span-12 md:col-span-6 relative flex items-center justify-center py-12 md:py-0 order-2 md:order-1 z-10">
             <div class="text-center px-6 md:px-24 max-w-xl">
-                <h2 class="text-3xl md:text-4xl font-bold">Lorem ipsum</h2>
+                <h2 class="text-3xl md:text-4xl font-bold">A Space for Your True Self</h2>
                 <p class="mt-6 text-gray-600 leading-relaxed">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed
-                    cursus ante dapibus diam. Sed nisi, nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum.
+                    Whether you’re here to create memories with friends, celebrate a milestone, 
+                    or simply enjoy a moment of self-expression, Anxietive is here for you. 
+                    Every corner of our studio is crafted to inspire creativity and authenticity. 
                 </p>
                 <p class="mt-4 text-gray-600 leading-relaxed">
-                    Curabitur sodales ligula in libero. Sed dignissim lacinia nunc. Curabitur tortor, pellentesque nibh.
-                    Aenean quam. In scelerisque sem at dolor. Maecenas mattis sed convallis tristique sem proin.
+                    This is not just about photos it’s about capturing the story of who you are today, 
+                    so you can look back and remember the confidence, laughter, and creativity you felt in that moment.
                 </p>
             </div>
         </div>
 
-        <!-- IMAGE 6 column right, full to edge -->
+        <!-- IMAGE -->
         <div class="col-span-12 md:col-span-6 relative order-1 md:order-2 h-64 md:h-full">
             <div class="absolute inset-0 w-full h-full overflow-hidden">
                 @if(isset($images[1]))
