@@ -20,6 +20,7 @@
             font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI",
                 "Helvetica Neue", Arial, sans-serif;
         }
+
     </style>
 </head>
 
@@ -40,7 +41,7 @@
             <!-- Menu -->
             <nav id="menu"
                 class="hidden fixed inset-0 bg-white z-40 flex-col items-center justify-center space-y-8 text-lg md:static md:flex md:flex-row md:space-y-0 md:space-x-8 md:bg-transparent md:shadow-none font-medium">
-                
+
                 <!-- Tombol Close (mobile only) -->
                 <button id="menu-close" class="absolute top-6 right-6 text-3xl text-gray-700 md:hidden">✕</button>
 
@@ -54,6 +55,25 @@
                     class="{{ request()->routeIs('pricelist') ? 'text-black font-medium' : 'text-gray-700 hover:text-black' }}">Pricelist</a>
                 <a href="{{ route('booking') }}"
                     class="{{ request()->routeIs('booking') ? 'text-black font-medium' : 'text-gray-700 hover:text-black' }}">Booking</a>
+
+                {{-- AUTH LINKS --}}
+                @guest
+                <a href="{{ route('login') }}"
+                    class="flex items-center space-x-1 text-gray-700 hover:text-black md:ml-6">
+                    <img src="{{ asset('images/logo/icon_user.png') }}" alt="User Icon" class="h-5 w-auto">
+                    <span>Log In</span>
+                </a>
+                @endguest
+
+                @auth
+                <form action="{{ route('logout') }}" method="POST" class="md:ml-6">
+                    @csrf
+                    <button type="submit" class="flex items-center space-x-1 text-gray-700 hover:text-black">
+                        <img src="{{ asset('images/logo/icon_user.png') }}" alt="User Icon" class="w-5 h-5">
+                        <span>Logout ({{ Auth::user()->name }})</span>
+                    </button>
+                </form>
+                @endauth
             </nav>
         </div>
     </header>
@@ -73,7 +93,7 @@
             </p>
 
             <!-- Kanan -->
-            <div class="flex items-center space-x-2">
+            <div class="flex items-center space-x-1">
                 <img src="{{ asset('images/logo/instagram_logo.png') }}" alt="Instagram Logo" class="w-5 h-5" />
                 <a href="https://www.instagram.com/anxietive/" target="_blank" class="text-sm text-gray-600">
                     Follow us on Instagram
@@ -182,6 +202,8 @@
                 });
             })();
         });
+
     </script>
 </body>
+
 </html>

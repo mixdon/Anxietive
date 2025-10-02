@@ -14,7 +14,7 @@ class BookingController extends Controller
                 'id' => 'basic-pekanbaru',
                 'title' => 'BASIC STUDIO',
                 'location' => 'Pekanbaru | Cempedak I',
-                'address' => 'Jl. Cempedak I No.3, Wonorejo, Kec. Marpoyan Damai, Kota Pekanbaru, Riau 28125, Indonesia',
+                'address' => 'Jl. Cempedak I No.3, Wonorejo, Kec. Marpoyan Damai, Kota Pekanbaru, Riau, Indonesia',
                 'duration' => '30 minutes',
                 'detail_duration' => [
                     '5 minutes get ready',
@@ -28,7 +28,7 @@ class BookingController extends Controller
                 'id' => 'basic-lampung',
                 'title' => 'BASIC STUDIO',
                 'location' => 'Lampung | KS. Tubun',
-                'address' => 'Jl. KS. Tubun No.10, Rw. Laut, Kec. Tanjungkarang Timur, Kota Bandar Lampung, Lampung 35213, Indonesia',
+                'address' => 'Jl. KS. Tubun No.10, Rw. Laut, Kec. Tanjungkarang Timur, Kota Bandar Lampung, Lampung, Indonesia',
                 'duration' => '30 minutes',
                 'detail_duration' => [
                     '5 minutes get ready',
@@ -42,7 +42,7 @@ class BookingController extends Controller
                 'id' => 'basic-delima',
                 'title' => 'BASIC STUDIO',
                 'location' => 'Pekanbaru | Delima',
-                'address' => 'Jl. Delima, Delima, Kec. Tampan, Kota Pekanbaru, Riau 28291, Indonesia',
+                'address' => 'Jl. Delima, Delima, Kec. Tampan, Kota Pekanbaru, Riau, Indonesia',
                 'duration' => '30 minutes',
                 'detail_duration' => [
                     '5 minutes get ready',
@@ -56,19 +56,19 @@ class BookingController extends Controller
                 'id' => 'large-pekanbaru',
                 'title' => 'LARGE STUDIO',
                 'location' => 'Pekanbaru | Cempedak I',
-                'address' => 'Jl. Cempedak I No.3, Wonorejo, Kec. Marpoyan Damai, Kota Pekanbaru, Riau 28125, Indonesia',
+                'address' => 'Jl. Cempedak I No.3, Wonorejo, Kec. Marpoyan Damai, Kota Pekanbaru, Riau, Indonesia',
                 'duration' => '60 minutes',
                 'detail_duration' => [
                     'Self Photo Studio Pekanbaru',
                 ],
                 'price' => 100000,
-                'image' => 'images/booking/LargeStudio001.png',
+                'image' => 'images/booking/LargeStudio001.jpg',
             ],
             [
                 'id' => 'red-theater-lampung',
                 'title' => 'RED THEATER STUDIO',
                 'location' => 'Lampung | KS. Tubun',
-                'address' => 'Jl. KS. Tubun No.10, Rw. Laut, Kec. Tanjungkarang Timur, Kota Bandar Lampung, Lampung 35213, Indonesia',
+                'address' => 'Jl. KS. Tubun No.10, Rw. Laut, Kec. Tanjungkarang Timur, Kota Bandar Lampung, Lampung, Indonesia',
                 'duration' => '30 minutes',
                 'detail_duration' => [
                     '5 minutes get ready',
@@ -82,7 +82,7 @@ class BookingController extends Controller
                 'id' => 'red-pekanbaru',
                 'title' => 'RED STUDIO',
                 'location' => 'Pekanbaru | Cempedak I',
-                'address' => 'Jl. Cempedak I No.3, Wonorejo, Kec. Marpoyan Damai, Kota Pekanbaru, Riau 28125, Indonesia',
+                'address' => 'Jl. Cempedak I No.3, Wonorejo, Kec. Marpoyan Damai, Kota Pekanbaru, Riau, Indonesia',
                 'duration' => '15 minutes',
                 'detail_duration' => [
                     'Self Photo Studio Pekanbaru',
@@ -94,7 +94,7 @@ class BookingController extends Controller
                 'id' => 'red-lampung',
                 'title' => 'RED STUDIO',
                 'location' => 'Lampung | KS. Tubun',
-                'address' => 'Jl. KS. Tubun No.10, Rw. Laut, Kec. Tanjungkarang Timur, Kota Bandar Lampung, Lampung 35213, Indonesia',
+                'address' => 'Jl. KS. Tubun No.10, Rw. Laut, Kec. Tanjungkarang Timur, Kota Bandar Lampung, Lampung, Indonesia',
                 'duration' => '15 minutes',
                 'detail_duration' => [
                     'Self Photo Studio Lampung',

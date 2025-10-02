@@ -4,7 +4,8 @@
 
 @section('content')
 <div class="max-w-6xl mx-auto py-12 px-6">
-    <a href="{{ route('booking.schedule', request()->query('studio') ?? 'basic-pekanbaru') }}" class="text-sm text-gray-500 hover:text-gray-700">&larr; Back</a>
+    <a href="{{ route('booking.schedule', request()->query('studio') ?? 'basic-pekanbaru') }}"
+        class="text-sm text-gray-500 hover:text-gray-700">&larr; Back</a>
 
     <h1 class="text-3xl md:text-4xl font-bold text-center mt-6">Booking Form</h1>
 
@@ -21,9 +22,9 @@
             </div>
 
             @if(session('success'))
-                <div class="bg-green-50 border border-green-200 p-3 rounded mb-4 text-green-700">
-                    {{ session('success') }}
-                </div>
+            <div class="bg-green-50 border border-green-200 p-3 rounded mb-4 text-green-700">
+                {{ session('success') }}
+            </div>
             @endif
 
             <form action="{{ route('booking.store') }}" method="POST" class="space-y-4 bg-white p-6 rounded shadow">
@@ -35,31 +36,39 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Name *</label>
                     <input name="name" value="{{ old('name', optional($user)->name) }}" required
-                           class="mt-1 block w-full border-gray-200 rounded-md p-3 focus:ring focus:ring-indigo-200" placeholder="Your name">
+                        class="mt-1 block w-full border-gray-200 rounded-md p-3 focus:ring focus:ring-indigo-200"
+                        placeholder="Your name">
                     @error('name') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Email *</label>
                     <input name="email" value="{{ old('email', optional($user)->email) }}" required
-                           class="mt-1 block w-full border-gray-200 rounded-md p-3 focus:ring focus:ring-indigo-200" placeholder="you@example.com">
+                        class="mt-1 block w-full border-gray-200 rounded-md p-3 focus:ring focus:ring-indigo-200"
+                        placeholder="you@example.com">
                     @error('email') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Phone Number *</label>
                     <input name="phone" value="{{ old('phone') }}" required
-                           class="mt-1 block w-full border-gray-200 rounded-md p-3 focus:ring focus:ring-indigo-200" placeholder="+62...">
+                        class="mt-1 block w-full border-gray-200 rounded-md p-3 focus:ring focus:ring-indigo-200"
+                        placeholder="+62...">
                     @error('phone') <p class="text-red-500 text-sm mt-1">{{ $message }}</p> @enderror
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Add Your Message</label>
-                    <textarea name="message" rows="4" class="mt-1 block w-full border-gray-200 rounded-md p-3 focus:ring focus:ring-indigo-200" placeholder="Anything we should know?">{{ old('message') }}</textarea>
+                    <textarea name="message" rows="4"
+                        class="mt-1 block w-full border-gray-200 rounded-md p-3 focus:ring focus:ring-indigo-200"
+                        placeholder="Anything we should know?">{{ old('message') }}</textarea>
                 </div>
 
                 <div>
-                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-md transition">Book Now</button>
+                    <button type="submit"
+                        class="w-full inline-block px-8 py-3 bg-indigo-600 text-white rounded-md text-base font-medium transition hover:bg-indigo-700">
+                        Book Now
+                    </button>
                 </div>
             </form>
         </div>
@@ -68,20 +77,46 @@
         <div>
             <div class="bg-white p-6 rounded-lg shadow">
                 <h3 class="font-semibold text-gray-800 mb-3">Booking Details</h3>
-                <p class="text-gray-800 font-medium">{{ $selected['location'] ?? 'Studio' }}</p>
-                <p class="text-sm text-gray-500 mt-2">
+
+                @if($selected)
+                <p class="text-gray-800 font-medium text-lg">{{ $selected['title'] ?? 'Studio' }}</p>
+                <p class="text-sm text-gray-500 mt-1">{{ $selected['location'] ?? '' }}</p>
+                <p class="text-sm text-gray-500">{{ $selected['address'] ?? '' }}</p>
+
+                @if(!empty($selected['description']))
+                <p class="text-sm text-gray-500 mt-2">{{ $selected['description'] }}</p>
+                @endif
+
+                @if(!empty($selected['duration']))
+                <p class="text-sm text-gray-600 mt-2">Duration: {{ $selected['duration'] }}</p>
+                @endif
+
+                @if(!empty($selected['detail_duration']))
+                <ul class="list-disc ml-5 mt-2 text-sm text-gray-600 space-y-1">
+                    @foreach($selected['detail_duration'] as $item)
+                    <li>{{ $item }}</li>
+                    @endforeach
+                </ul>
+                @endif
+
+                <p class="text-sm text-gray-500 mt-3">
                     @if(request()->query('date'))
-                        {{ \Carbon\Carbon::parse(request()->query('date'))->format('j F Y') }} at {{ request()->query('time') }}
+                    {{ \Carbon\Carbon::parse(request()->query('date'))->format('j F Y') }}
+                    at {{ request()->query('time') }}
                     @else
-                        -
+                    -
                     @endif
                 </p>
-                <p class="text-sm text-gray-500 mt-2">More details...</p>
 
                 <div class="mt-4">
                     <h4 class="text-sm text-gray-700">Payment Details</h4>
-                    <p class="text-lg font-semibold mt-2">Rp {{ number_format($selected['price'] ?? 0, 0, ',', '.') }}</p>
+                    <p class="text-lg font-semibold mt-2">
+                        Rp {{ number_format($selected['price'] ?? 0, 0, ',', '.') }}
+                    </p>
                 </div>
+                @else
+                <p class="text-sm text-gray-500">No studio selected.</p>
+                @endif
 
                 <p class="text-xs text-gray-500 mt-4">
                     By completing your booking, you agree to receive related SMS notifications.

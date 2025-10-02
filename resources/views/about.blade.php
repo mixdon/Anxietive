@@ -6,7 +6,7 @@
 
 <!-- HERO -->
 <section>
-    <div class="container mx-auto max-w-3xl px-6 text-center py-20">
+    <div class="container mx-auto max-w-3xl px-6 text-center py-16">
         <p class="text-sm tracking-widest text-gray-600 font-medium">
             The Full Story
         </p>
@@ -21,7 +21,7 @@
 </section>
 
 <!-- SECTION 1: Image left, text right -->
-<section class="relative">
+<section class="relative border-t border-gray-200">
     <div class="grid grid-cols-1 md:grid-cols-12 min-h-[40rem]">
         <!-- IMAGE -->
         <div class="col-span-12 md:col-span-6 relative order-1 md:order-1 h-64 md:h-full">
@@ -55,7 +55,7 @@
 </section>
 
 <!-- SECTION 2: Text left, image right -->
-<section class="relative">
+<section class="relative border-t border-gray-200">
     <div class="grid grid-cols-1 md:grid-cols-12 min-h-[40rem]">
         <!-- TEXT -->
         <div

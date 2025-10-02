@@ -5,12 +5,12 @@
 @section('content')
 
 <!-- HERO FULLSCREEN IMAGE -->
-<section class="relative w-full h-screen flex items-center justify-center bg-white">
+<section class="relative py-10 w-full h-screen flex items-center justify-center bg-white">
     <img src="{{ asset('images/logo/pricelist.png') }}" alt="Pricelist" class="max-h-full max-w-full object-contain">
 </section>
 
 <!-- EXTRA CONTENT (CTA) -->
-<section class="py-12 bg-gray-50">
+<section class="py-10 bg-gray-50">
     <div class="container mx-auto px-6 text-center">
         <h3 class="text-2xl md:text-3xl font-bold">Ready to Capture Your Best Moments?</h3>
         <p class="mt-4 text-gray-600 max-w-2xl mx-auto">
@@ -81,9 +81,11 @@
     /* teks overlay biar selalu terlihat jelas */
     .gallery-item span {
         text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
-        -webkit-text-stroke: 0.5px black; /* border tipis */
+        -webkit-text-stroke: 0.5px black;
+        /* border tipis */
         paint-order: stroke fill;
     }
+
 </style>
 @endpush
 
@@ -114,5 +116,6 @@
             }
         });
     });
+
 </script>
 @endpush
