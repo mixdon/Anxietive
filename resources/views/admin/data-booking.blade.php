@@ -1,0 +1,174 @@
+@extends('layouts.admin')
+
+@section('title', 'Manage Bookings | Admin')
+
+@section('content')
+<div class="max-w-7xl mx-auto px-6 py-10">
+
+    <!-- Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
+        <h1 class="text-2xl font-semibold text-gray-800">Manage Bookings</h1>
+    </div>
+
+    <!-- Success Message -->
+    @if(session('success'))
+        <div class="mb-6 p-4 bg-green-100 border border-green-200 text-green-800 rounded-lg shadow-sm">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    <!-- Table -->
+    <div class="bg-white rounded-xl shadow border border-gray-100 overflow-hidden">
+        <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+            <h3 class="text-lg font-semibold text-gray-800">Booking List</h3>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="min-w-full text-sm text-left border-collapse">
+                <thead class="bg-gray-50 text-gray-600 uppercase text-xs tracking-wider border-b">
+                    <tr>
+                        <th class="px-6 py-3 font-medium">#</th>
+                        <th class="px-6 py-3 font-medium">Customer</th>
+                        <th class="px-6 py-3 font-medium">Package</th>
+                        <th class="px-6 py-3 font-medium">Office</th>
+                        <th class="px-6 py-3 font-medium">Date</th>
+                        <th class="px-6 py-3 font-medium">Time</th>
+                        <th class="px-6 py-3 font-medium">Status</th>
+                        <th class="px-6 py-3 font-medium text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 text-gray-700">
+                    @forelse($bookings as $booking)
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="px-6 py-3">{{ $loop->iteration }}</td>
+                            <td class="px-6 py-3">
+                                <div class="font-medium">{{ $booking->customer->fullname ?? '-' }}</div>
+                                <div class="text-xs text-gray-500">{{ $booking->customer->email ?? '-' }}</div>
+                            </td>
+                            <td class="px-6 py-3">{{ $booking->package->judul_package ?? '-' }}</td>
+                            <td class="px-6 py-3">{{ $booking->package->office->office_name ?? '-' }}</td>
+                            <td class="px-6 py-3">{{ \Carbon\Carbon::parse($booking->date)->format('Y-m-d') }}</td>
+                            <td class="px-6 py-3">{{ \Carbon\Carbon::parse($booking->time)->format('H:i') }}</td>
+
+                            <td class="px-6 py-3">
+                                <span class="px-3 py-1 rounded-full text-xs font-semibold
+                                    @if($booking->status == 'pending') bg-yellow-100 text-yellow-700
+                                    @elseif($booking->status == 'completed') bg-green-100 text-green-700
+                                    @elseif($booking->status == 'cancelled') bg-red-100 text-red-700
+                                    @elseif($booking->status == 'refund') bg-blue-100 text-blue-700
+                                    @endif">
+                                    {{ ucfirst($booking->status) }}
+                                </span>
+                            </td>
+
+                            <td class="px-6 py-3 text-center flex flex-col sm:flex-row gap-2 justify-center items-center">
+                                <!-- Form Update Status -->
+                                <form method="POST" action="{{ route('admin.bookings.updateStatus', $booking->id) }}" class="inline-flex items-center justify-center gap-2">
+                                    @csrf
+                                    <select name="status"
+                                        class="border border-gray-300 rounded-lg text-sm px-2 py-1 focus:ring-2 focus:ring-purple-400 focus:border-purple-400">
+                                        <option value="pending" {{ $booking->status=='pending' ? 'selected' : '' }}>Pending</option>
+                                        <option value="completed" {{ $booking->status=='completed' ? 'selected' : '' }}>Completed</option>
+                                        <option value="cancelled" {{ $booking->status=='cancelled' ? 'selected' : '' }}>Cancelled</option>
+                                        <option value="refund" {{ $booking->status=='refund' ? 'selected' : '' }}>Refund</option>
+                                    </select>
+                                    <button type="submit"
+                                        class="px-3 py-1 bg-purple-600 text-white rounded-lg text-xs hover:bg-purple-500 transition">
+                                        <i class="fa-solid fa-check"></i> Update
+                                    </button>
+                                </form>
+
+                                                                <!-- Tombol Lihat Bukti Transfer -->
+                                <button onclick="openModal({{ $booking->id }})"
+                                    class="px-3 py-1 bg-blue-600 text-white rounded-lg text-xs hover:bg-blue-500 transition">
+                                    <i class="fa-solid fa-eye"></i> View
+                                </button>
+                            </td>
+                        </tr>
+
+                        <!-- Modal Bukti Transfer -->
+                        <div id="modal-{{ $booking->id }}"
+                            class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+                            <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full relative">
+                                <button onclick="closeModal({{ $booking->id }})"
+                                    class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
+                                    <i class="fa-solid fa-xmark text-lg"></i>
+                                </button>
+
+                                <h2 class="text-lg font-semibold text-gray-800 mb-6 border-b pb-2">
+                                    Booking Details
+                                </h2>
+
+                                <!-- ✅ Perbaikan posisi titik dua -->
+                                <div class="text-sm text-gray-700 space-y-2 leading-relaxed">
+                                    <div class="flex">
+                                        <span class="font-semibold w-28">Customer</span>
+                                        <span class="mr-1">:</span>
+                                        <span>{{ $booking->customer->fullname ?? '-' }}</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="font-semibold w-28">Email</span>
+                                        <span class="mr-1">:</span>
+                                        <span>{{ $booking->customer->email ?? '-' }}</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="font-semibold w-28">Package</span>
+                                        <span class="mr-1">:</span>
+                                        <span>{{ $booking->package->judul_package ?? '-' }}</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="font-semibold w-28">Office</span>
+                                        <span class="mr-1">:</span>
+                                        <span>{{ $booking->package->office->office_name ?? '-' }}</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="font-semibold w-28">Date</span>
+                                        <span class="mr-1">:</span>
+                                        <span>{{ \Carbon\Carbon::parse($booking->date)->format('Y-m-d') }}</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="font-semibold w-28">Time</span>
+                                        <span class="mr-1">:</span>
+                                        <span>{{ \Carbon\Carbon::parse($booking->time)->format('H:i') }}</span>
+                                    </div>
+                                    <div class="flex">
+                                        <span class="font-semibold w-28">Status</span>
+                                        <span class="mr-1">:</span>
+                                        <span>{{ ucfirst($booking->status) }}</span>
+                                    </div>
+                                </div>
+
+                                @if($booking->img_bukti_trf)
+                                    <div class="mt-6 text-center">
+                                        <p class="font-semibold mb-3">Bukti Transfer:</p>
+                                        <img src="{{ asset('storage/' . $booking->img_bukti_trf) }}" 
+                                            alt="Bukti Transfer"
+                                            class="rounded-xl shadow-md max-h-64 mx-auto border border-gray-200">
+                                    </div>
+                                @else
+                                    <p class="text-gray-500 mt-4 text-center italic">Tidak ada bukti transfer.</p>
+                                @endif
+                            </div>
+                        </div>
+                    @empty
+                        <tr>
+                            <td colspan="8" class="text-center py-6 text-gray-500">No bookings found.</td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Script Modal -->
+<script>
+    function openModal(id) {
+        document.getElementById(`modal-${id}`).classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+        document.getElementById(`modal-${id}`).classList.add('hidden');
+    }
+</script>
+@endsection

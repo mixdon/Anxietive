@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use App\Models\Customer;
 
 class AuthController extends Controller
 {
@@ -16,42 +18,54 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
-
-        if (Auth::attempt($credentials)) {
-            return redirect()->route('home')->with('success', 'Login berhasil!');
-        }
-
-        return back()->withErrors(['email' => 'Email atau password salah.']);
-    }
-
-    public function showRegister()
-    {
-        return view('auth.register');
-    }
-
-    public function register(Request $request)
-    {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
+            'identity' => 'required|string', // email atau username
+            'password' => 'required|string',
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        $identity = $request->input('identity');
+        $password = $request->input('password');
 
-        Auth::login($user);
+        if (str_contains($identity, '@')) {
+            // LOGIN CUSTOMER
+            $customer = Customer::where('email', $identity)->first();
+            if ($customer && Hash::check($password, $customer->password)) {
+                Auth::guard('customer')->login($customer);
+                return redirect()->intended(route('booking'))
+                                 ->with('success', 'Login Customer berhasil!');
+            }
 
-        return redirect()->route('home')->with('success', 'Registrasi berhasil!');
+            return back()->withErrors(['identity' => 'Email atau password salah.']);
+        } else {
+            // LOGIN ADMIN
+            $admin = DB::table('tb_user')->where('username', $identity)->first();
+            if ($admin && Hash::check($password, $admin->password)) {
+                // Simpan admin di session supaya bisa dipanggil di view
+                Session::put('admin_user', $admin);
+
+                return redirect()->route('admin.dashboard')
+                                 ->with('success', 'Login Admin berhasil!');
+            }
+
+            return back()->withErrors(['identity' => 'Username atau password salah.']);
+        }
     }
 
     public function logout(Request $request)
     {
-        Auth::logout();
-        return redirect()->route('home')->with('success', 'Berhasil logout.');
+        // Logout customer
+        if (Auth::guard('customer')->check()) {
+            Auth::guard('customer')->logout();
+        }
+
+        // Hapus session admin
+        Session::forget('admin_user');
+
+        // Invalidate session
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        // Redirect ke halaman home
+        return redirect()->route('home')->with('success', 'Logout berhasil.');
     }
 }
