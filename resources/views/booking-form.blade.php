@@ -64,7 +64,7 @@
     @endif
 
     <!-- FORM -->
-    <form action="{{ route('booking.store') }}" method="POST" enctype="multipart/form-data"
+    <form id="bookingForm" action="{{ route('booking.store') }}" method="POST" enctype="multipart/form-data"
         class="grid grid-cols-1 lg:grid-cols-3 gap-10 mt-10">
         @csrf
         <input type="hidden" name="studio" value="{{ $selected->id }}">
@@ -96,14 +96,16 @@
             </div>
 
             <div>
-                <label for="img_bukti_trf" class="block text-sm font-medium text-gray-700">Bukti Transfer</label>
-                <input type="file" name="img_bukti_trf" id="img_bukti_trf" class="mt-2 block w-full text-sm text-gray-900
+                <label for="img_bukti_trf" class="block text-sm font-medium text-gray-700">Bukti Transfer <span
+                        class="text-red-500">*</span></label>
+                <input type="file" name="img_bukti_trf" id="img_bukti_trf" required
+                    class="mt-2 block w-full text-sm text-gray-900
                            file:mr-4 file:py-2 file:px-4
                            file:rounded-lg file:border-0
                            file:text-sm file:font-semibold
                            file:bg-blue-50 file:text-blue-700
                            hover:file:bg-blue-100" accept="image/*">
-                <p class="text-xs text-gray-500 mt-1">Opsional. Upload bukti transfer Anda (jpg, png, max 2MB).</p>
+                <p class="text-xs text-gray-500 mt-1">Upload bukti transfer Anda (jpg, png, max 2MB).</p>
                 <img id="previewBukti" src="#" alt="Preview"
                     class="mt-2 hidden w-32 h-32 object-cover rounded-md border" />
             </div>
@@ -171,6 +173,7 @@
 <script>
     const buktiInput = document.getElementById('img_bukti_trf');
     const preview = document.getElementById('previewBukti');
+    const form = document.getElementById('bookingForm');
 
     buktiInput.addEventListener('change', function () {
         const file = this.files[0];
@@ -187,6 +190,13 @@
         }
     });
 
+    // Validasi agar bukti transfer wajib diisi
+    form.addEventListener('submit', function (e) {
+        if (!buktiInput.files.length) {
+            e.preventDefault();
+            alert('Harap upload bukti transfer terlebih dahulu sebelum melanjutkan.');
+        }
+    });
 </script>
 
 {{-- SCRIPT MODAL LOGIN --}}
@@ -201,7 +211,6 @@
         if (e.target === loginModal) loginModal.classList.add('hidden');
     });
     showLoginBtn.addEventListener('click', () => loginModal.classList.remove('hidden'));
-
 </script>
 @endguest
 @endsection
