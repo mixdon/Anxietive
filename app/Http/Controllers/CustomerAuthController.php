@@ -2,69 +2,79 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Customer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Customer;
 use Illuminate\Support\Facades\Hash;
 
 class CustomerAuthController extends Controller
 {
-    public function showLoginForm()
+
+    public function showLoginForm(Request $request)
     {
-        return view('auth.login', ['type' => 'customer']);
+        // Ambil URL tujuan redirect (kalau ada)
+        $redirect = $request->query('redirect', route('home'));
+
+        return view('auth.login', compact('redirect'));
     }
 
     public function login(Request $request)
     {
         $credentials = $request->validate([
-            'email' => 'required|email',
+            'email'    => 'required|email',
             'password' => 'required|string',
         ]);
 
-        if (Auth::guard('customer')->attempt($credentials)) {
+        // Coba autentikasi
+        if (Auth::guard('customer')->attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
-            return redirect()->intended(route('booking'))
-                             ->with('success', 'Login berhasil!');
+
+            // Ambil redirect URL dari input atau gunakan home
+            $redirectUrl = $request->input('redirect', route('home'));
+
+            // Redirect ke halaman yang diinginkan
+            return redirect()->intended($redirectUrl)->with('success', 'Login berhasil!');
         }
 
-        return back()->withErrors(['email' => 'Email atau password salah.']);
+        // Jika gagal login
+        return back()->withErrors([
+            'email' => 'Email atau password salah.',
+        ])->onlyInput('email');
+    }
+
+    public function showRegisterForm(Request $request)
+    {
+        $redirect = $request->query('redirect', route('home'));
+        return view('auth.register', compact('redirect'));
+    }
+
+    public function register(Request $request)
+    {
+        $data = $request->validate([
+            'fullname' => 'required|string|max:255',
+            'email'    => 'required|email|unique:customers,email',
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $customer = Customer::create([
+            'fullname' => $data['fullname'],
+            'email'    => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
+
+        Auth::guard('customer')->login($customer);
+
+        $redirectUrl = $request->input('redirect', route('home'));
+        return redirect($redirectUrl)->with('success', 'Registrasi berhasil! Anda sudah login.');
     }
 
     public function logout(Request $request)
     {
         Auth::guard('customer')->logout();
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect()->route('customer.login')->with('success', 'Logout berhasil.');
-    }
-
-    public function showRegisterForm()
-    {
-        return view('auth.register');
-    }
-
-    public function register(Request $request)
-    {
-        $validated = $request->validate([
-            'fullname' => 'required|string|max:200',
-            'email' => 'required|email|unique:tb_customer,email',
-            'password' => 'required|string|min:6|confirmed',
-            'phone' => 'nullable|string|max:20',
-        ]);
-
-        $customer = Customer::create([
-            'fullname' => $validated['fullname'],
-            'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
-            'phone' => $validated['phone'] ?? null,
-            'status_aktif' => 'pending',
-            'insert_at' => now(),
-        ]);
-
-        Auth::guard('customer')->login($customer);
-
-        return redirect()->intended(route('booking'))
-                         ->with('success', 'Registrasi berhasil! Anda sudah login.');
+        return redirect()->route('home')->with('success', 'Logout berhasil.');
     }
 }

@@ -2,18 +2,22 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory;
 
     protected $table = 'tb_user';
-    protected $fillable = ['username', 'password', 'fullname', 'office', 'roles'];
-    protected $hidden = ['password', 'remember_token'];
+
+    protected $fillable = [
+        'username',
+        'password',
+        'fullname',
+        'office',
+        'roles',
+    ];
 
     public function role()
     {
@@ -23,12 +27,5 @@ class User extends Authenticatable
     public function officeData()
     {
         return $this->belongsTo(Office::class, 'office');
-    }
-
-    public function setPasswordAttribute($value)
-    {
-        if ($value) {
-            $this->attributes['password'] = bcrypt($value);
-        }
     }
 }

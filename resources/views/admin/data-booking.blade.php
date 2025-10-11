@@ -17,14 +17,18 @@
         </div>
     @endif
 
-    <!-- Table -->
-    <div class="bg-white rounded-xl shadow border border-gray-100 overflow-hidden">
-        <div class="p-6 border-b border-gray-100 flex justify-between items-center">
-            <h3 class="text-lg font-semibold text-gray-800">Booking List</h3>
+    <!-- Table Container -->
+    <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
+        <div class="p-5 border-b border-gray-200 flex flex-wrap items-center justify-between gap-3 sm:flex-nowrap">
+            <h3 class="text-lg font-semibold text-gray-800 whitespace-nowrap">Booking List</h3>
+
+            <!-- Search Bar -->
+            <input type="text" id="tableSearch" placeholder="Search bookings..."
+                class="w-full sm:w-64 border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
         </div>
 
         <div class="overflow-x-auto">
-            <table class="min-w-full text-sm text-left border-collapse">
+            <table id="bookingTable" class="min-w-full text-sm text-left border-collapse">
                 <thead class="bg-gray-50 text-gray-600 uppercase text-xs tracking-wider border-b">
                     <tr>
                         <th class="px-6 py-3 font-medium">#</th>
@@ -78,7 +82,7 @@
                                     </button>
                                 </form>
 
-                                                                <!-- Tombol Lihat Bukti Transfer -->
+                                <!-- Tombol Lihat Bukti Transfer -->
                                 <button onclick="openModal({{ $booking->id }})"
                                     class="px-3 py-1 bg-blue-600 text-white rounded-lg text-xs hover:bg-blue-500 transition">
                                     <i class="fa-solid fa-eye"></i> View
@@ -99,7 +103,6 @@
                                     Booking Details
                                 </h2>
 
-                                <!-- ✅ Perbaikan posisi titik dua -->
                                 <div class="text-sm text-gray-700 space-y-2 leading-relaxed">
                                     <div class="flex">
                                         <span class="font-semibold w-28">Customer</span>
@@ -161,7 +164,7 @@
     </div>
 </div>
 
-<!-- Script Modal -->
+<!-- Script Modal + Search -->
 <script>
     function openModal(id) {
         document.getElementById(`modal-${id}`).classList.remove('hidden');
@@ -170,5 +173,18 @@
     function closeModal(id) {
         document.getElementById(`modal-${id}`).classList.add('hidden');
     }
+
+    // Simple search filter
+    document.addEventListener('DOMContentLoaded', () => {
+        const searchInput = document.getElementById('tableSearch');
+        const rows = document.querySelectorAll('#bookingTable tbody tr');
+
+        searchInput.addEventListener('input', e => {
+            const q = e.target.value.toLowerCase();
+            rows.forEach(row => {
+                row.style.display = row.innerText.toLowerCase().includes(q) ? '' : 'none';
+            });
+        });
+    });
 </script>
 @endsection

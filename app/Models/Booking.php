@@ -42,4 +42,12 @@ class Booking extends Model
     {
         return $this->belongsTo(Customer::class, 'customer_id');
     }
+
+    public function scopeCompleted($query){
+    return $query->where('status','completed');
+    }
+
+    public function scopePending($query){
+        return $query->where('status','pending');
+    }
 }
