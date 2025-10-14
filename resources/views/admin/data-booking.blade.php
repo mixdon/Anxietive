@@ -19,14 +19,24 @@
 
     <!-- Table Container -->
     <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
-        <div class="p-5 border-b border-gray-200 flex flex-wrap items-center justify-between gap-3 sm:flex-nowrap">
-            <h3 class="text-lg font-semibold text-gray-800 whitespace-nowrap">Booking List</h3>
+        <div class="p-5 border-b border-gray-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <h3 class="text-lg font-semibold text-gray-800">Booking List</h3>
 
-            <!-- Search Bar -->
-            <input type="text" id="tableSearch" placeholder="Search bookings..."
-                class="w-full sm:w-64 border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+            <div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
+                <select id="lengthMenu"
+                    class="border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none">
+                    <option value="5">05 rows</option>
+                    <option value="10" selected>10 rows</option>
+                    <option value="25">25 rows</option>
+                    <option value="50">50 rows</option>
+                </select>
+
+                <input type="text" id="tableSearch" placeholder="Search bookings..."
+                    class="w-full sm:w-64 border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+            </div>
         </div>
 
+        <!-- Responsive Table -->
         <div class="overflow-x-auto">
             <table id="bookingTable" class="min-w-full text-sm text-left border-collapse">
                 <thead class="bg-gray-50 text-gray-600 uppercase text-xs tracking-wider border-b">
@@ -66,7 +76,7 @@
                             </td>
 
                             <td class="px-6 py-3 text-center flex flex-col sm:flex-row gap-2 justify-center items-center">
-                                <!-- Form Update Status -->
+                                <!-- Update Status -->
                                 <form method="POST" action="{{ route('admin.bookings.updateStatus', $booking->id) }}" class="inline-flex items-center justify-center gap-2">
                                     @csrf
                                     <select name="status"
@@ -78,19 +88,19 @@
                                     </select>
                                     <button type="submit"
                                         class="px-3 py-1 bg-purple-600 text-white rounded-lg text-xs hover:bg-purple-500 transition">
-                                        <i class="fa-solid fa-check"></i> Update
+                                        <i class="fa-solid fa-check"></i>
                                     </button>
                                 </form>
 
-                                <!-- Tombol Lihat Bukti Transfer -->
+                                <!-- View Transfer Proof -->
                                 <button onclick="openModal({{ $booking->id }})"
                                     class="px-3 py-1 bg-blue-600 text-white rounded-lg text-xs hover:bg-blue-500 transition">
-                                    <i class="fa-solid fa-eye"></i> View
+                                    <i class="fa-solid fa-eye"></i>
                                 </button>
                             </td>
                         </tr>
 
-                        <!-- Modal Bukti Transfer -->
+                        <!-- Modal -->
                         <div id="modal-{{ $booking->id }}"
                             class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
                             <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full relative">
@@ -104,41 +114,13 @@
                                 </h2>
 
                                 <div class="text-sm text-gray-700 space-y-2 leading-relaxed">
-                                    <div class="flex">
-                                        <span class="font-semibold w-28">Customer</span>
-                                        <span class="mr-1">:</span>
-                                        <span>{{ $booking->customer->fullname ?? '-' }}</span>
-                                    </div>
-                                    <div class="flex">
-                                        <span class="font-semibold w-28">Email</span>
-                                        <span class="mr-1">:</span>
-                                        <span>{{ $booking->customer->email ?? '-' }}</span>
-                                    </div>
-                                    <div class="flex">
-                                        <span class="font-semibold w-28">Package</span>
-                                        <span class="mr-1">:</span>
-                                        <span>{{ $booking->package->judul_package ?? '-' }}</span>
-                                    </div>
-                                    <div class="flex">
-                                        <span class="font-semibold w-28">Office</span>
-                                        <span class="mr-1">:</span>
-                                        <span>{{ $booking->package->office->office_name ?? '-' }}</span>
-                                    </div>
-                                    <div class="flex">
-                                        <span class="font-semibold w-28">Date</span>
-                                        <span class="mr-1">:</span>
-                                        <span>{{ \Carbon\Carbon::parse($booking->date)->format('Y-m-d') }}</span>
-                                    </div>
-                                    <div class="flex">
-                                        <span class="font-semibold w-28">Time</span>
-                                        <span class="mr-1">:</span>
-                                        <span>{{ \Carbon\Carbon::parse($booking->time)->format('H:i') }}</span>
-                                    </div>
-                                    <div class="flex">
-                                        <span class="font-semibold w-28">Status</span>
-                                        <span class="mr-1">:</span>
-                                        <span>{{ ucfirst($booking->status) }}</span>
-                                    </div>
+                                    <div class="flex"><span class="font-semibold w-28">Customer</span><span>:</span><span class="ml-1">{{ $booking->customer->fullname ?? '-' }}</span></div>
+                                    <div class="flex"><span class="font-semibold w-28">Email</span><span>:</span><span class="ml-1">{{ $booking->customer->email ?? '-' }}</span></div>
+                                    <div class="flex"><span class="font-semibold w-28">Package</span><span>:</span><span class="ml-1">{{ $booking->package->judul_package ?? '-' }}</span></div>
+                                    <div class="flex"><span class="font-semibold w-28">Office</span><span>:</span><span class="ml-1">{{ $booking->package->office->office_name ?? '-' }}</span></div>
+                                    <div class="flex"><span class="font-semibold w-28">Date</span><span>:</span><span class="ml-1">{{ \Carbon\Carbon::parse($booking->date)->format('Y-m-d') }}</span></div>
+                                    <div class="flex"><span class="font-semibold w-28">Time</span><span>:</span><span class="ml-1">{{ \Carbon\Carbon::parse($booking->time)->format('H:i') }}</span></div>
+                                    <div class="flex"><span class="font-semibold w-28">Status</span><span>:</span><span class="ml-1">{{ ucfirst($booking->status) }}</span></div>
                                 </div>
 
                                 @if($booking->img_bukti_trf)
@@ -154,37 +136,82 @@
                             </div>
                         </div>
                     @empty
-                        <tr>
-                            <td colspan="8" class="text-center py-6 text-gray-500">No bookings found.</td>
-                        </tr>
+                        <tr><td colspan="8" class="text-center py-6 text-gray-500">No bookings found.</td></tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
+
+        <!-- Pagination -->
+        <div id="paginationContainer" class="flex flex-wrap justify-between items-center p-4 border-t border-gray-200 text-sm text-gray-600">
+            <div id="showingInfo" class="mb-2 sm:mb-0"></div>
+            <div class="flex items-center gap-2">
+                <button id="prevPage" class="px-3 py-1 border rounded-md hover:bg-gray-100 disabled:opacity-50"><</button>
+                <span id="pageInfo"></span>
+                <button id="nextPage" class="px-3 py-1 border rounded-md hover:bg-gray-100 disabled:opacity-50">></button>
+            </div>
+        </div>
     </div>
 </div>
 
-<!-- Script Modal + Search -->
+<!-- Script Modal + Search + Pagination -->
 <script>
-    function openModal(id) {
-        document.getElementById(`modal-${id}`).classList.remove('hidden');
+document.addEventListener('DOMContentLoaded', () => {
+    const tableBody = document.querySelector('#bookingTable tbody');
+    const rows = Array.from(tableBody.querySelectorAll('tr'));
+    const lengthMenu = document.getElementById('lengthMenu');
+    const paginationInfo = document.getElementById('pageInfo');
+    const showingInfo = document.getElementById('showingInfo');
+    const prevBtn = document.getElementById('prevPage');
+    const nextBtn = document.getElementById('nextPage');
+    const searchInput = document.getElementById('tableSearch');
+
+    let currentPage = 1;
+    let rowsPerPage = parseInt(lengthMenu.value);
+    let filteredRows = [...rows];
+
+    function renderTable() {
+        // Hitung total halaman berdasarkan hasil pencarian
+        const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+        currentPage = Math.min(currentPage, totalPages || 1);
+
+        // Sembunyikan semua baris, tampilkan hanya sesuai halaman aktif
+        rows.forEach(row => row.style.display = 'none');
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        filteredRows.slice(start, end).forEach(row => row.style.display = '');
+
+        // Update informasi pagination
+        paginationInfo.textContent = `Page ${currentPage} of ${totalPages || 1}`;
+        showingInfo.textContent = filteredRows.length
+            ? `Showing ${start + 1}–${Math.min(end, filteredRows.length)} of ${filteredRows.length} entries`
+            : 'No entries found';
+        prevBtn.disabled = currentPage === 1;
+        nextBtn.disabled = currentPage === totalPages || totalPages === 0;
     }
 
-    function closeModal(id) {
-        document.getElementById(`modal-${id}`).classList.add('hidden');
-    }
-
-    // Simple search filter
-    document.addEventListener('DOMContentLoaded', () => {
-        const searchInput = document.getElementById('tableSearch');
-        const rows = document.querySelectorAll('#bookingTable tbody tr');
-
-        searchInput.addEventListener('input', e => {
-            const q = e.target.value.toLowerCase();
-            rows.forEach(row => {
-                row.style.display = row.innerText.toLowerCase().includes(q) ? '' : 'none';
-            });
-        });
+    // Filter pencarian
+    searchInput.addEventListener('input', () => {
+        const query = searchInput.value.toLowerCase();
+        filteredRows = rows.filter(row => row.innerText.toLowerCase().includes(query));
+        currentPage = 1;
+        renderTable();
     });
+
+    // Navigasi halaman
+    prevBtn.addEventListener('click', () => { if (currentPage > 1) { currentPage--; renderTable(); } });
+    nextBtn.addEventListener('click', () => { currentPage++; renderTable(); });
+    lengthMenu.addEventListener('change', e => { rowsPerPage = parseInt(e.target.value); currentPage = 1; renderTable(); });
+
+    renderTable();
+});
+
+// Modal
+function openModal(id) {
+    document.getElementById(`modal-${id}`).classList.remove('hidden');
+}
+function closeModal(id) {
+    document.getElementById(`modal-${id}`).classList.add('hidden');
+}
 </script>
 @endsection

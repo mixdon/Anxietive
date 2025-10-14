@@ -23,7 +23,8 @@
     @endif
 
     <!-- Form Create/Edit -->
-    <div id="formContainer" class="hidden bg-white rounded-xl shadow-md p-6 mb-10 border border-gray-200">
+    <div id="formContainer"
+        class="hidden bg-white rounded-xl shadow-md p-6 mb-10 border border-gray-200 opacity-0 transform translate-y-3 transition-all duration-300 ease-out">
         <div class="flex justify-between items-center mb-6">
             <h2 id="formTitle" class="text-xl font-semibold text-gray-800">Add New Office</h2>
             <button id="btnCancel" class="text-gray-400 hover:text-gray-600">
@@ -40,18 +41,11 @@
                     <label class="block text-sm font-medium text-gray-700 mb-1">Office Name</label>
                     <input type="text" name="office_name" id="office_name" required
                         class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none">
-                    @error('office_name')
-                    <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
-                    @enderror
                 </div>
-
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
                     <input type="text" name="address" id="address"
                         class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none">
-                    @error('address')
-                    <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
-                    @enderror
                 </div>
             </div>
 
@@ -71,15 +65,24 @@
     <!-- Table Section -->
     <div id="tableContainer" class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
         <div
-            class="p-5 border-b border-gray-200 flex flex-wrap items-center justify-between gap-3 sm:flex-nowrap">
+            class="p-5 border-b border-gray-200 flex flex-wrap items-center justify-between gap-3 sm:flex-nowrap bg-gray-50">
             <h3 class="text-lg font-semibold text-gray-800 whitespace-nowrap">Office List</h3>
-            <input type="text" id="tableSearch" placeholder="Search offices..."
-                class="w-full sm:w-64 border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+            <div class="flex flex-wrap gap-3 items-center">
+                <select id="rowsPerPage"
+                    class="border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+                    <option value="5">05 rows</option>
+                    <option value="10" selected>10 rows</option>
+                    <option value="25">25 rows</option>
+                    <option value="50">50 rows</option>
+                </select>
+                <input type="text" id="tableSearch" placeholder="Search offices..."
+                    class="w-full sm:w-64 border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
+            </div>
         </div>
 
-        <div class="overflow-x-auto">
-            <table id="officeTable" class="min-w-full text-sm text-left">
-                <thead class="bg-gray-50 text-gray-600 uppercase text-xs tracking-wider border-b">
+        <div class="overflow-x-auto scroll-smooth pb-2">
+            <table id="officeTable" class="min-w-[600px] w-full text-sm text-left">
+                <thead class="bg-gray-100 text-gray-600 uppercase text-xs tracking-wider border-b">
                     <tr>
                         <th class="px-4 py-3">#</th>
                         <th class="px-4 py-3">Office Name</th>
@@ -89,26 +92,24 @@
                 </thead>
                 <tbody class="divide-y divide-gray-100 text-gray-700">
                     @forelse($offices as $office)
-                    <tr class="hover:bg-gray-50 transition">
+                    <tr class="hover:bg-purple-50 transition-colors">
                         <td class="px-4 py-3">{{ $loop->iteration }}</td>
                         <td class="px-4 py-3 font-medium text-gray-800">{{ $office->office_name }}</td>
-                        <td class="px-4 py-3">{{ $office->address }}</td>
+                        <td class="px-4 py-3">{{ $office->address ?? '-' }}</td>
                         <td class="px-4 py-3 text-center">
                             <div class="flex items-center justify-center gap-2">
-                                <!-- Edit -->
-                                <button class="btnEdit flex items-center justify-center w-8 h-8 text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 rounded-md transition"
-                                    data-id="{{ $office->id }}"
-                                    data-office_name="{{ $office->office_name }}"
+                                <button
+                                    class="btnEdit flex items-center justify-center w-8 h-8 text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 rounded-md transition"
+                                    data-id="{{ $office->id }}" data-office_name="{{ $office->office_name }}"
                                     data-address="{{ $office->address }}">
                                     <i class="fa-solid fa-pen text-sm"></i>
                                 </button>
 
-                                <!-- Delete -->
-                                <form action="{{ route('admin.data-office.destroy', $office->id) }}" method="POST">
+                                <form action="{{ route('admin.data-office.destroy', $office->id) }}" method="POST"
+                                    onsubmit="return confirm('Delete this office?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
-                                        onclick="return confirm('Are you sure you want to delete this office?')"
                                         class="flex items-center justify-center w-8 h-8 text-red-600 hover:text-red-800 bg-red-50 hover:bg-red-100 rounded-md transition">
                                         <i class="fa-solid fa-trash text-sm"></i>
                                     </button>
@@ -124,69 +125,141 @@
                 </tbody>
             </table>
         </div>
+
+        <!-- Pagination -->
+        <div id="paginationContainer"
+            class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t bg-gray-50 text-sm text-gray-700 text-center sm:text-left">
+            <p id="paginationInfo"></p>
+            <div class="flex items-center gap-2" id="paginationButtons"></div>
+        </div>
     </div>
 </div>
 
 <!-- Scripts -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+    const rows = [...document.querySelectorAll('#officeTable tbody tr')];
+    const rowsPerPageSelect = document.getElementById('rowsPerPage');
+    const paginationContainer = document.getElementById('paginationButtons');
+    const paginationInfo = document.getElementById('paginationInfo');
+    const searchInput = document.getElementById('tableSearch');
+    const tableContainer = document.getElementById('tableContainer');
+
+    const formContainer = document.getElementById('formContainer');
     const btnAddNew = document.getElementById('btnAddNew');
     const btnCancel = document.getElementById('btnCancel');
     const btnCancel2 = document.getElementById('btnCancel2');
-    const formContainer = document.getElementById('formContainer');
-    const tableContainer = document.getElementById('tableContainer');
+    const formTitle = document.getElementById('formTitle');
     const officeForm = document.getElementById('officeForm');
     const formMethod = document.getElementById('formMethod');
-    const formTitle = document.getElementById('formTitle');
-    const inputs = {
-        office_name: document.getElementById('office_name'),
-        address: document.getElementById('address'),
-    };
+    const officeNameInput = document.getElementById('office_name');
+    const addressInput = document.getElementById('address');
 
-    function showForm(editMode = false, data = null) {
-        formContainer.classList.remove('hidden');
-        tableContainer.classList.add('hidden');
-        if (editMode && data) {
-            formTitle.textContent = 'Edit Office';
-            officeForm.action = `/admin/data-office/${data.id}`;
-            formMethod.value = 'PUT';
-            Object.keys(inputs).forEach(key => inputs[key].value = data[key]);
+    let currentPage = 1;
+    let rowsPerPage = parseInt(rowsPerPageSelect.value);
+
+    // --- TABLE PAGINATION & SEARCH ---
+    function renderTable() {
+        const filteredRows = rows.filter(row =>
+            row.innerText.toLowerCase().includes(searchInput.value.toLowerCase())
+        );
+
+        const total = filteredRows.length;
+        const totalPages = Math.ceil(total / rowsPerPage);
+
+        rows.forEach(row => row.classList.add('hidden'));
+        const start = (currentPage - 1) * rowsPerPage;
+        const end = start + rowsPerPage;
+        filteredRows.slice(start, end).forEach(row => row.classList.remove('hidden'));
+
+        paginationContainer.innerHTML = `
+            <button id="prevPage"
+                class="px-3 py-1 border rounded-md text-gray-600 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed">&lt;</button>
+            <span class="text-gray-700 font-medium">Page ${currentPage} of ${totalPages || 1}</span>
+            <button id="nextPage"
+                class="px-3 py-1 border rounded-md text-gray-600 hover:bg-gray-100 disabled:opacity-40 disabled:cursor-not-allowed">&gt;</button>
+        `;
+
+        const prevBtn = document.getElementById('prevPage');
+        const nextBtn = document.getElementById('nextPage');
+        prevBtn.disabled = currentPage === 1;
+        nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable();
+            }
+        });
+        nextBtn.addEventListener('click', () => {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderTable();
+            }
+        });
+
+        const showingStart = total === 0 ? 0 : start + 1;
+        const showingEnd = Math.min(end, total);
+        paginationInfo.textContent = `Showing ${showingStart}–${showingEnd} of ${total} entries`;
+    }
+
+    rowsPerPageSelect.addEventListener('change', () => {
+        rowsPerPage = parseInt(rowsPerPageSelect.value);
+        currentPage = 1;
+        renderTable();
+    });
+
+    searchInput.addEventListener('input', () => {
+        currentPage = 1;
+        renderTable();
+    });
+
+    // --- FORM TOGGLE ---
+    function toggleForm(show) {
+        if (show) {
+            formContainer.classList.remove('hidden');
+            tableContainer.classList.add('hidden');
+            setTimeout(() => formContainer.classList.remove('opacity-0', 'translate-y-3'), 10);
         } else {
-            formTitle.textContent = 'Add New Office';
-            officeForm.action = "{{ route('admin.data-office.store') }}";
-            formMethod.value = 'POST';
-            Object.values(inputs).forEach(i => i.value = '');
+            formContainer.classList.add('opacity-0', 'translate-y-3');
+            setTimeout(() => {
+                formContainer.classList.add('hidden');
+                tableContainer.classList.remove('hidden');
+            }, 300);
         }
     }
 
-    function hideForm() {
-        formContainer.classList.add('hidden');
-        tableContainer.classList.remove('hidden');
-    }
+    // --- ADD BUTTON ---
+    btnAddNew.addEventListener('click', () => {
+        formTitle.textContent = 'Add New Office';
+        officeForm.action = "{{ route('admin.data-office.store') }}";
+        formMethod.value = 'POST';
+        officeNameInput.value = '';
+        addressInput.value = '';
+        toggleForm(true);
+    });
 
-    btnAddNew.addEventListener('click', () => showForm(false));
-    btnCancel.addEventListener('click', hideForm);
-    btnCancel2.addEventListener('click', hideForm);
+    // --- CANCEL BUTTONS ---
+    btnCancel.addEventListener('click', () => toggleForm(false));
+    btnCancel2.addEventListener('click', () => toggleForm(false));
 
+    // --- EDIT BUTTON ---
     document.querySelectorAll('.btnEdit').forEach(btn => {
         btn.addEventListener('click', () => {
-            showForm(true, {
-                id: btn.dataset.id,
-                office_name: btn.dataset.office_name,
-                address: btn.dataset.address,
-            });
+            const id = btn.dataset.id;
+            const office_name = btn.dataset.office_name;
+            const address = btn.dataset.address;
+
+            formTitle.textContent = 'Edit Office';
+            officeForm.action = `/admin/data-office/${id}`;
+            formMethod.value = 'PUT';
+            officeNameInput.value = office_name;
+            addressInput.value = address;
+            toggleForm(true);
         });
     });
 
-    // Simple search
-    const searchInput = document.getElementById('tableSearch');
-    const rows = document.querySelectorAll('#officeTable tbody tr');
-    searchInput.addEventListener('input', e => {
-        const q = e.target.value.toLowerCase();
-        rows.forEach(row => {
-            row.style.display = row.innerText.toLowerCase().includes(q) ? '' : 'none';
-        });
-    });
+    renderTable();
 });
 </script>
 @endsection

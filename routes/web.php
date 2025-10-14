@@ -80,6 +80,7 @@ Route::prefix('admin')->name('admin.')->middleware('auth.admin')->group(function
     Route::controller(UserController::class)->group(function () {
         Route::get('/data-admin', 'index')->name('data-admin');
         Route::post('/data-admin', 'store')->name('data-admin.store');
+        Route::put('/data-admin/{id}', 'update')->name('data-admin.update');
         Route::delete('/data-admin/{id}', 'destroy')->name('data-admin.destroy');
     });
 

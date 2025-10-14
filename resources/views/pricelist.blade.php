@@ -26,7 +26,7 @@
     </div>
 </section>
 
-<!-- GALLERY: FULL WIDTH SWIPER (3 visible + peek 4th) -->
+<!-- GALLERY: FULL WIDTH SWIPER -->
 <section class="pt-10 bg-white">
     <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">Background Selection</h2>
 
@@ -34,11 +34,12 @@
         <!-- Swiper container -->
         <div class="swiper mySwiper">
             <div class="swiper-wrapper">
-                @foreach($gallery as $item)
+                @foreach($gallery as $index => $item)
                 <div class="swiper-slide gallery-item relative">
                     <!-- Gambar -->
                     <img src="{{ asset('images/pricelist/'.$item['file']) }}" alt="{{ $item['name'] }}"
-                        class="w-full h-[520px] object-cover rounded-xl shadow-md cursor-pointer">
+                        class="w-full h-[520px] object-cover rounded-xl shadow-md cursor-pointer"
+                        onclick="openModal('{{ asset('images/pricelist/'.$item['file']) }}', {{ $index }})">
 
                     <!-- Overlay text -->
                     <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -62,6 +63,19 @@
     </div>
 </section>
 
+<!-- MODAL VIEWER -->
+<div id="imageModal"
+    class="fixed inset-0 bg-white/95 hidden items-center justify-center z-50 backdrop-blur-sm transition-all duration-300">
+    <button onclick="closeModal()"
+        class="absolute top-6 right-8 text-gray-700 text-3xl hover:scale-110 hover:text-gray-500 transition z-[60]">✕</button>
+    <button onclick="prevImage()"
+        class="absolute left-3 md:left-10 text-gray-700 text-4xl hover:scale-125 hover:text-gray-500 select-none transition z-[60]">‹</button>
+    <img id="modalImage" src="" alt="Preview"
+        class="max-h-[80vh] max-w-[90vw] mx-auto rounded-lg shadow-2xl transition-all duration-300 bg-white p-2 relative z-[50]" />
+    <button onclick="nextImage()"
+        class="absolute right-3 md:right-10 text-gray-700 text-4xl hover:scale-125 hover:text-gray-500 select-none transition z-[60]">›</button>
+</div>
+
 @endsection
 
 @push('styles')
@@ -82,10 +96,18 @@
     .gallery-item span {
         text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
         -webkit-text-stroke: 0.5px black;
-        /* border tipis */
         paint-order: stroke fill;
     }
 
+    /* modal image layering fix */
+    #imageModal button {
+        z-index: 60;
+    }
+
+    #imageModal img {
+        z-index: 50;
+        position: relative;
+    }
 </style>
 @endpush
 
@@ -99,7 +121,7 @@
             slidesPerView: 1.1,
             spaceBetween: 12,
             loop: false,
-            watchOverflow: true, // sembunyikan arrow kalau slide < jumlah view
+            watchOverflow: true,
             navigation: {
                 nextEl: '.swiper-button-next',
                 prevEl: '.swiper-button-prev',
@@ -117,5 +139,32 @@
         });
     });
 
+    // Modal logic
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImage');
+    let currentIndex = 0;
+    const galleryImages = @json(array_map(fn($item) => asset('images/pricelist/' . $item['file']), $gallery));
+
+    function openModal(src, index) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        modalImg.src = src;
+        currentIndex = index;
+    }
+
+    function closeModal() {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    function prevImage() {
+        currentIndex = (currentIndex - 1 + galleryImages.length) % galleryImages.length;
+        modalImg.src = galleryImages[currentIndex];
+    }
+
+    function nextImage() {
+        currentIndex = (currentIndex + 1) % galleryImages.length;
+        modalImg.src = galleryImages[currentIndex];
+    }
 </script>
-@endpush
+@endpush    
