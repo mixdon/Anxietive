@@ -1,24 +1,28 @@
 @extends('layouts.user')
 
-@section('title', 'Booking Schedule | anxietive')
+@section('title', __('messages.booking_schedule_title') . ' | anxietive')
 
 @section('content')
 <div class="max-w-6xl mx-auto py-12 px-6">
     <!-- Back Button -->
     <a href="{{ route('booking') }}" class="inline-flex items-center text-sm text-gray-500 hover:text-gray-700">
-        &larr; Back
+        &larr; {{ __('messages.booking') }}
     </a>
 
-    <h1 class="text-3xl md:text-4xl font-bold text-center mt-6">Schedule your service</h1>
+    <h1 class="text-3xl md:text-4xl font-bold text-center mt-6">
+        {{ __('messages.booking_schedule_title') }}
+    </h1>
     <p class="text-center text-gray-500 mt-2">
-        Check our availability and book the date and time that works for you
+        {{ __('messages.booking_schedule_subtitle') }}
     </p>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-10">
         <!-- Kalender -->
         <div class="lg:col-span-1">
             <div class="bg-white p-6 rounded-lg shadow">
-                <h3 class="font-semibold text-gray-800 mb-4">Select a Date</h3>
+                <h3 class="font-semibold text-gray-800 mb-4">
+                    {{ __('messages.booking_select_date') }}
+                </h3>
 
                 <div class="flex items-center justify-between mb-2 text-gray-600">
                     <button id="prevMonth" class="p-2">&larr;</button>
@@ -43,9 +47,11 @@
         <!-- Waktu -->
         <div class="lg:col-span-1">
             <div class="bg-white p-6 rounded-lg shadow">
-                <h3 class="font-semibold text-gray-800 mb-4">Availability</h3>
+                <h3 class="font-semibold text-gray-800 mb-4">
+                    {{ __('messages.booking_availability') }}
+                </h3>
                 <p id="selectedDateText" class="text-sm text-gray-600 mb-4">
-                    Select a date to view times
+                    {{ __('messages.booking_select_date_view') }}
                 </p>
                 <div id="timesGrid" class="grid grid-cols-2 gap-3"></div>
             </div>
@@ -54,11 +60,15 @@
         <!-- Detail Service -->
         <div>
             <div class="bg-white p-6 rounded-lg shadow">
-                <h3 class="font-semibold text-gray-800 mb-3">Service Details</h3>
+                <h3 class="font-semibold text-gray-800 mb-3">
+                    {{ __('messages.booking_service_details') }}
+                </h3>
 
                 <p class="text-gray-800 font-medium">{{ $selected->office->office_name }}</p>
                 <p class="text-sm text-gray-500 mt-2">{{ $selected->office->address }}</p>
-                <p class="text-sm text-gray-500 mt-2">Duration: {{ $selected->times }} minutes</p>
+                <p class="text-sm text-gray-500 mt-2">
+                    {{ __('messages.booking_duration') }}: {{ $selected->times }} {{ __('messages.booking_minutes') }}
+                </p>
 
                 @if(!empty($selected->detail_duration))
                     <ul class="list-disc ml-5 mt-3 text-sm text-gray-600 space-y-1">
@@ -73,14 +83,14 @@
                 </p>
 
                 <p id="summaryDateTime" class="text-sm text-gray-500 mt-2">
-                    No date/time selected
+                    {{ __('messages.booking_no_datetime') }}
                 </p>
 
                 <button
                     id="toForm"
                     class="w-full mt-6 inline-block px-8 py-3 bg-gray-800 text-white rounded-md text-base font-medium transition disabled:opacity-50"
                     disabled>
-                    Next
+                    {{ __('messages.booking_next') }}
                 </button>
             </div>
         </div>
@@ -138,10 +148,10 @@
 
         const dayOfWeek = selectedDate.getDay();
         if (config.closed_days.includes(dayOfWeek)) {
-            selectedDateText.textContent = formatDate(selectedDate) + ' — Closed';
+            selectedDateText.textContent = formatDate(selectedDate) + ' — {{ __('messages.booking_closed') }}';
             const el = document.createElement('div');
             el.className = 'text-sm text-red-500';
-            el.textContent = 'Closed on this day';
+            el.textContent = '{{ __('messages.booking_closed') }}';
             timesGrid.appendChild(el);
             checkToForm();
             return;
@@ -156,7 +166,6 @@
         const isToday = selectedDate.toDateString() === now.toDateString();
         const nowMin = now.getHours() * 60 + now.getMinutes();
 
-        // 🔍 Ambil waktu yang sudah dibooking dari server
         const dateParam = selectedDate.toLocaleDateString('en-CA');
         const response = await fetch(`/booking/check-availability/${selectedStudio}/${dateParam}`);
         const bookedTimes = await response.json();
@@ -167,10 +176,7 @@
             if (isToday && t <= nowMin) continue;
 
             const ts = minutesToTime(t);
-            if (bookedTimes.includes(ts)) {
-                // Skip jam yang sudah dibooking
-                continue;
-            }
+            if (bookedTimes.includes(ts)) continue;
 
             available = true;
             const btn = document.createElement('button');
@@ -195,7 +201,7 @@
         if (!available) {
             const el = document.createElement('div');
             el.className = 'text-sm text-red-500';
-            el.textContent = 'No available slots for this day';
+            el.textContent = '{{ __('messages.booking_no_slots') }}';
             timesGrid.appendChild(el);
         }
     }

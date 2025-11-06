@@ -27,7 +27,7 @@ class PricelistController extends Controller
                 if (stripos($filename, $color) !== false) {
                     $grouped[$color][] = [
                         'file' => $filename,
-                        'name' => ucfirst($color),
+                        'name' => __('messages.color_' . $color),
                     ];
                     break;
                 }

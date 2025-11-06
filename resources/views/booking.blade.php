@@ -1,17 +1,16 @@
 @extends('layouts.user')
 
-@section('title', 'Booking | anxietive')
+@section('title', __('messages.booking') . ' | anxietive')
 
 @section('content')
 <section class="py-12 bg-gray-50">
     <div class="container mx-auto px-4 md:px-12">
         <!-- Header -->
         <h1 class="text-4xl md:text-5xl font-bold text-gray-900 text-center">
-            Capture Your Best Moments ✨
+            {{ __('messages.booking_title') }}
         </h1>
         <p class="mt-4 text-lg text-gray-600 text-center max-w-2xl mx-auto">
-            Come visit <span class="font-semibold text-gray-900">Anxietive</span> in your city,
-            pick your favorite studio type, and let’s create memories that last forever. 📸
+            {!! __('messages.booking_subtitle') !!}
         </p>
 
         <!-- Card grid -->
@@ -34,30 +33,26 @@
 
                 <!-- Content -->
                 <div class="p-6 flex flex-col flex-grow">
-                    <!-- Lokasi -->
                     <h2 class="text-xl md:text-2xl font-bold text-gray-900 leading-snug">
                         {{ $studio->office->office_name ?? '-' }}
                     </h2>
 
-                    <!-- Alamat -->
                     <p class="text-sm md:text-base text-gray-600 mt-2">
                         {{ $studio->office->address ?? '-' }}
                     </p>
 
-                    <!-- Durasi & Harga -->
                     <div class="mt-6 space-y-2 mb-20">
                         <span class="block text-base md:text-lg text-gray-700 font-semibold">
-                            {{ $studio->times ?? 30 }} minutes
+                            {{ $studio->times ?? 30 }} {{ __('messages.booking_minutes') }}
                         </span>
                         <span class="block text-base md:text-lg text-gray-700 font-semibold">
                             Rp {{ number_format($studio->amount ?? 0,0,',','.') }}
                         </span>
                     </div>
 
-                    <!-- Button pojok kiri bawah -->
                     <a href="{{ route('booking.schedule', ['id' => $studio->id]) }}"
                         class="absolute bottom-5 left-5 inline-block px-8 py-3 bg-blue-600 text-white rounded-md text-base font-semibold hover:bg-blue-500 transition shadow">
-                        Book Now
+                        {{ __('messages.booking_button') }}
                     </a>
                 </div>
             </div>

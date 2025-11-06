@@ -1,0 +1,99 @@
+<?php
+return [
+    // Navbar / menu
+    'home' => 'Beranda',
+    'about' => 'Tentang',
+    'booking' => 'Pesan',
+    'contact' => 'Kontak',
+    'pricelist' => 'Daftar Harga',
+    'login' => 'Masuk',
+
+    // Home page
+    'home_description' => 'adalah studio foto mandiri tempat setiap senyum, pose, dan momen menjadi kisah yang layak dikenang.',
+    'home_keywords' => 'Foto Mandiri | Momen Autentik | Anxietive Studio',
+
+    // About page
+    'about_full_story' => 'Kisah Lengkap',
+    'about_title' => 'Tentang',
+    'about_intro' => 'Anxietive adalah studio foto mandiri yang dibangun dengan keyakinan bahwa setiap momen, sekecil apa pun, dapat diubah menjadi sesuatu yang kreatif dan bermakna. Terinspirasi oleh ide untuk mengubah kecemasan menjadi karya seni, kami menyediakan ruang di mana Anda dapat menjadi diri sendiri dan menangkap ekspresi terbaik Anda.',
+    'about_section1_title' => 'Dari Cemas Menjadi Kreatif',
+    'about_section1_text1' => 'Nama “Anxietive” berasal dari gagasan untuk mengubah rasa gugup menjadi kreativitas. Kami percaya bahwa fotografi lebih dari sekadar gambar — ini adalah cara untuk menerima diri sendiri, mengatasi rasa tidak percaya diri, dan merayakan keunikan Anda.',
+    'about_section1_text2' => 'Dalam setiap sesi, kami ingin Anda merasa nyaman, bebas, dan percaya diri mengekspresikan siapa Anda sebenarnya. Itulah sebabnya studio kami dirancang untuk privasi, kenyamanan, dan keaslian.',
+    'about_section2_title' => 'Ruang untuk Diri Sejati Anda',
+    'about_section2_text1' => 'Baik Anda datang untuk menciptakan kenangan bersama teman, merayakan momen spesial, atau sekadar menikmati waktu berekspresi, Anxietive hadir untuk Anda. Setiap sudut studio kami dibuat untuk menginspirasi kreativitas dan keaslian.',
+    'about_section2_text2' => 'Ini bukan hanya tentang foto — ini tentang menangkap kisah siapa diri Anda hari ini, agar Anda dapat mengingat kembali kepercayaan diri, tawa, dan kreativitas yang Anda rasakan saat itu.',
+
+    // Contact page
+    'contact_title' => 'Hubungi Kami',
+    'contact_description' => 'Punya pertanyaan, butuh bantuan, atau ingin memesan sesi foto mandiri? Kami senang mendengarnya! Hubungi kami kapan saja dan tim kami akan dengan senang hati membantu.',
+    'contact_address' => 'Jl. Cempedak I No.3, Pekanbaru, Riau.',
+    'contact_google' => 'google.com',
+    'contact_phone' => '081364007605',
+    'contact_first_name' => 'Nama Depan',
+    'contact_last_name' => 'Nama Belakang',
+    'contact_email' => 'Email *',
+    'contact_message' => 'Pesan',
+    'contact_send' => 'Kirim',
+    'opening_hours' => 'Jam Buka',
+    'opening_mon' => 'Senin',
+    'opening_close' => 'Tutup',
+    'opening_tuesun' => 'Selasa - Minggu',
+    'opening_time' => '10.00 – 21.30',
+
+    // Pricelist page
+    'pricelist_title' => 'Daftar Harga',
+    'pricelist_cta_title' => 'Siap untuk Mengabadikan Momen Terbaikmu?',
+    'pricelist_cta_text' => 'Pesan sesi foto mandiri kamu hari ini dan ciptakan kenangan abadi bersama Anxietive. Pilih latar belakangmu, atur pose terbaikmu, dan biarkan kami mengurus sisanya!',
+    'pricelist_cta_button' => 'Pesan Sekarang',
+    'pricelist_gallery_title' => 'Pilihan Latar Belakang',
+    'color_white' => 'Putih',
+    'color_grey' => 'Abu-abu',
+    'color_navy' => 'Biru Dongker',
+    'color_peach' => 'Peach',
+    'color_red' => 'Merah',
+
+    // Booking page
+    'booking_title' => 'Abadikan Momen Terbaikmu ✨',
+    'booking_subtitle' => 'Kunjungi <span class="font-semibold text-gray-900">Anxietive</span> di kotamu, pilih tipe studio favoritmu, dan ciptakan kenangan yang tak terlupakan. 📸',
+    'booking_minutes' => 'menit',
+    'booking_button' => 'Pesan Sekarang',
+
+    // Booking Schedule page
+    'booking_schedule_title' => 'Jadwalkan Layanan Anda',
+    'booking_schedule_subtitle' => 'Periksa ketersediaan kami dan pesan tanggal serta waktu yang sesuai untuk Anda',
+    'booking_select_date' => 'Pilih Tanggal',
+    'booking_availability' => 'Ketersediaan',
+    'booking_select_date_view' => 'Pilih tanggal untuk melihat waktu',
+    'booking_service_details' => 'Detail Layanan',
+    'booking_duration' => 'Durasi',
+    'booking_closed' => 'Tutup pada hari ini',
+    'booking_no_slots' => 'Tidak ada waktu tersedia pada hari ini',
+    'booking_next' => 'Lanjutkan',
+    'booking_no_datetime' => 'Belum memilih tanggal/waktu',
+
+    // Booking Form page
+    'booking_form_title' => 'Formulir Pemesanan',
+    'booking_back' => 'Kembali',
+    'booking_login_required' => 'Masuk Diperlukan',
+    'booking_login_message' => 'Silakan masuk atau daftar terlebih dahulu untuk melanjutkan proses pemesanan.',
+    'booking_login_now' => 'Masuk Sekarang',
+    'booking_register' => 'Daftar',
+    'booking_fullname' => 'Nama Lengkap',
+    'booking_email' => 'Email',
+    'booking_phone' => 'Nomor Telepon',
+    'booking_proof' => 'Bukti Transfer',
+    'booking_proof_hint' => 'Unggah bukti pembayaran dalam format gambar (JPG, PNG, atau JPEG).',
+    'booking_message' => 'Pesan (opsional)',
+    'booking_details' => 'Detail Pemesanan',
+    'booking_studio' => 'Studio',
+    'booking_duration' => 'Durasi',
+    'booking_minutes' => 'menit',
+    'at' => 'pukul',
+    'booking_payment_details' => 'Detail Pembayaran',
+    'booking_no_studio' => 'Tidak ada studio yang dipilih.',
+    'booking_sms_notice' => 'Anda akan menerima konfirmasi melalui WhatsApp atau Email setelah pembayaran diverifikasi.',
+    'booking_book_now' => 'Pesan Sekarang',
+    'booking_login_to_book' => 'Masuk untuk Memesan',
+    'booking_upload_required' => 'Silakan unggah bukti transfer sebelum mengirim formulir.',
+
+];

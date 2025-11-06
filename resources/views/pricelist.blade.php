@@ -1,26 +1,25 @@
 @extends('layouts.user')
 
-@section('title', 'Pricelist | anxietive')
+@section('title', __('messages.pricelist_title') . ' | anxietive')
 
 @section('content')
 
 <!-- HERO FULLSCREEN IMAGE -->
 <section class="relative py-10 w-full h-screen flex items-center justify-center bg-white">
-    <img src="{{ asset('images/logo/pricelist.png') }}" alt="Pricelist" class="max-h-full max-w-full object-contain">
+    <img src="{{ asset('images/logo/pricelist.png') }}" alt="{{ __('messages.pricelist_title') }}" class="max-h-full max-w-full object-contain">
 </section>
 
 <!-- EXTRA CONTENT (CTA) -->
 <section class="py-10 bg-gray-50">
     <div class="container mx-auto px-6 text-center">
-        <h3 class="text-2xl md:text-3xl font-bold">Ready to Capture Your Best Moments?</h3>
+        <h3 class="text-2xl md:text-3xl font-bold">{{ __('messages.pricelist_cta_title') }}</h3>
         <p class="mt-4 text-gray-600 max-w-2xl mx-auto">
-            Book your self–portrait session today and create timeless memories with anxietive.
-            Choose your background, strike your pose, and let us handle the rest!
+            {{ __('messages.pricelist_cta_text') }}
         </p>
         <div class="mt-6">
             <a href="{{ route('booking') }}"
                 class="inline-block px-8 py-3 bg-gray-900 text-white rounded-md text-base font-medium hover:bg-gray-700 transition">
-                Book Now
+                {{ __('messages.pricelist_cta_button') }}
             </a>
         </div>
     </div>
@@ -28,7 +27,7 @@
 
 <!-- GALLERY: FULL WIDTH SWIPER -->
 <section class="pt-10 bg-white">
-    <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">Background Selection</h2>
+    <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">{{ __('messages.pricelist_gallery_title') }}</h2>
 
     <div class="w-full">
         <!-- Swiper container -->
@@ -167,4 +166,4 @@
         modalImg.src = galleryImages[currentIndex];
     }
 </script>
-@endpush    
+@endpush

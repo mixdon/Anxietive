@@ -103,6 +103,8 @@
         </div>
 
         <div class="overflow-x-auto scroll-smooth pb-2">
+
+
             <table id="packageTable" class="min-w-[800px] w-full text-sm text-left">
                 <thead class="bg-gray-100 text-gray-600 uppercase text-xs tracking-wider border-b">
                     <tr>
@@ -124,11 +126,14 @@
                         <td class="px-4 py-3">{{ $package->times }}</td>
                         <td class="px-4 py-3">Rp {{ number_format($package->amount, 0, ',', '.') }}</td>
                         <td class="px-4 py-3">
-                            @if($package->image)
-                            <img src="{{ asset('storage/' . $package->image) }}" class="w-10 h-10 object-cover rounded-md border">
+
+                            <img src="<?= $package->image ?>" alt="" class="w-10 h-10 object-cover rounded-md border">
+
+                            <!-- @if($package->image)
+                            <img src="<?= asset('storage/' . $package->image) ?? "https://storage.anxietive.com/assets/resource-web/ .$package->image" ?>" class="w-10 h-10 object-cover rounded-md border">
                             @else
                             <span class="text-gray-400">No Image</span>
-                            @endif
+                            @endif -->
                         </td>
                         <td class="px-4 py-3 text-center">
                             <div class="flex items-center justify-center gap-2">

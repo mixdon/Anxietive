@@ -10,12 +10,12 @@
     <!-- KPI Cards -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         @php
-            $kpiCards = [
-                ['title'=>'Total Bookings','value'=>$totalBookings,'icon'=>'shopping-bag','color'=>'from-indigo-500 to-purple-500','growth'=>$bookingGrowth],
-                ['title'=>'Pending Bookings','value'=>$pendingBookings,'icon'=>'clock','color'=>'from-yellow-400 to-orange-400','growth'=>0],
-                ['title'=>'Active Customers','value'=>$totalCustomers,'icon'=>'users','color'=>'from-green-400 to-teal-500','growth'=>$customerGrowth],
-                ['title'=>'Revenue','value'=>$totalRevenue,'icon'=>'credit-card','color'=>'from-pink-500 to-red-500','growth'=>$revenueGrowth,'currency'=>'Rp '],
-            ];
+        $kpiCards = [
+        ['title'=>'Total Bookings','value'=>$totalBookings,'icon'=>'shopping-bag','color'=>'from-indigo-500 to-purple-500','growth'=>$bookingGrowth],
+        ['title'=>'Pending Bookings','value'=>$pendingBookings,'icon'=>'clock','color'=>'from-yellow-400 to-orange-400','growth'=>0],
+        ['title'=>'Active Customers','value'=>$totalCustomers,'icon'=>'users','color'=>'from-green-400 to-teal-500','growth'=>$customerGrowth],
+        ['title'=>'Revenue','value'=>$totalRevenue,'icon'=>'credit-card','color'=>'from-pink-500 to-red-500','growth'=>$revenueGrowth,'currency'=>'Rp '],
+        ];
         @endphp
 
         @foreach($kpiCards as $card)
@@ -76,7 +76,9 @@
                         <span>Rp {{ number_format($p['revenue'],0,',','.') }}</span>
                     </div>
                     <div class="w-full bg-gray-200 h-3 rounded-full">
-                        <div class="h-3 rounded-full bg-indigo-500" style="width: {{ ($p['revenue']/$maxPackageRevenue)*100 }}%"></div>
+                        <div class="h-3 rounded-full bg-indigo-500"
+                            style="width: {{ ($maxPackageRevenue > 0 ? ($p['revenue'] / $maxPackageRevenue) * 100 : 0) }}%">
+                        </div>
                     </div>
                 </li>
                 @endforeach
@@ -94,7 +96,9 @@
                         <span>Rp {{ number_format($o['revenue'],0,',','.') }}</span>
                     </div>
                     <div class="w-full bg-gray-200 h-3 rounded-full">
-                        <div class="h-3 rounded-full bg-green-500" style="width: {{ ($o['revenue']/$maxOfficeRevenue)*100 }}%"></div>
+                        <div class="h-3 rounded-full bg-green-500"
+                            style="width: {{ ($maxOfficeRevenue > 0 ? ($o['revenue'] / $maxOfficeRevenue) * 100 : 0) }}%">
+                        </div>
                     </div>
                 </li>
                 @endforeach
@@ -125,7 +129,9 @@
         options: {
             responsive: true,
             plugins: {
-                legend: { display: false },
+                legend: {
+                    display: false
+                },
                 tooltip: {
                     callbacks: {
                         label: function(context) {
@@ -151,7 +157,9 @@
         options: {
             responsive: true,
             plugins: {
-                legend: { display: false },
+                legend: {
+                    display: false
+                },
                 tooltip: {
                     callbacks: {
                         label: function(context) {
@@ -170,14 +178,20 @@
             labels: @json($statusLabels),
             datasets: [{
                 data: @json($statusCounts),
-                backgroundColor: ['#F59E0B','#3B82F6','#EF4444','#10B981']
+                backgroundColor: ['#F59E0B', '#3B82F6', '#EF4444', '#10B981']
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: { position: 'top', labels: { boxWidth: 20, padding: 15 } },
+                legend: {
+                    position: 'top',
+                    labels: {
+                        boxWidth: 20,
+                        padding: 15
+                    }
+                },
                 tooltip: {
                     callbacks: {
                         label: function(context) {

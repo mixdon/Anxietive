@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\PricelistController;
@@ -14,6 +17,15 @@ use App\Http\Controllers\BookingAdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CustomerAdminController;
 use App\Http\Controllers\DashboardController;
+
+// LANGUAGE SWITCHER
+Route::get('/lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'id'])) {
+        Session::put('locale', $locale);
+        App::setLocale($locale);
+    }
+    return Redirect::back();
+});
 
 // PUBLIC ROUTES
 Route::get('/', [HomeController::class, 'index'])->name('home');

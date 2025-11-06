@@ -1,6 +1,6 @@
 @extends('layouts.user')
 
-@section('title', 'Home | anxietive')
+@section('title', __('messages.home') . ' | anxietive')
 
 @section('content')
 <!-- Gallery -->
@@ -20,11 +20,10 @@
 <!-- Middle description -->
 <section class="text-center py-12">
   <p class="max-w-2xl mx-auto text-lg md:text-xl text-gray-700 leading-relaxed">
-    <span class="font-semibold text-gray-900">Anxietive</span> is a self photo studio where every smile, pose, 
-    and moment becomes a story worth keeping.
+    <span class="font-semibold text-gray-900">Anxietive</span> {{ __('messages.home_description') }}
   </p>
   <div class="mt-6 text-xs md:text-sm text-gray-500 tracking-widest uppercase">
-    Self Photo &nbsp;|&nbsp; Authentic Moments &nbsp;|&nbsp; Anxietive Studio
+    {{ __('messages.home_keywords') }}
   </div>
 </section>
 

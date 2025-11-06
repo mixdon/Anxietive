@@ -2,15 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\HelperModel;
 use Illuminate\Http\Request;
 use App\Models\Package;
 use Illuminate\Support\Facades\Storage;
 
 class PackageController extends Controller
 {
+
+
     public function index()
     {
         $packages = Package::all();
+        $imagePath = 'public/';
+
+        foreach ($packages as $key => $value) {
+            $image = $value->image;
+
+            if (Storage::exists('public/' . $image)) {
+                $value->image = asset('storage/' . $image);
+            } else {
+                $value->image = 'https://storage.anxietive.com/assets/resource-web/' . $image;
+            }
+        }
+
         return view('admin.data-package', compact('packages'));
     }
 
@@ -24,9 +39,21 @@ class PackageController extends Controller
             'id_office' => 'nullable|integer',
         ]);
 
+        /**
+         * Kode doni utk upload, local storage
+         */
+        /*
         $imagePath = $request->file('image')
             ? $request->file('image')->store('packages', 'public')
             : null;
+        */
+
+        /**
+         * Kode teguh utk upload, via API
+         */
+        $HelperModel = new HelperModel();
+        $log = __CLASS__ . '::' . __FUNCTION__;
+        $imagePath = $HelperModel->insertImg($request->file('image'), $log);
 
         Package::create([
             'judul_package' => $request->judul_package,
