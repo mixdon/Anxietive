@@ -8,6 +8,7 @@
     <!-- Header -->
     <div class="flex flex-wrap items-center justify-between gap-3 mb-8">
         <h1 class="text-3xl font-bold text-gray-800">Manage Offices</h1>
+
         <button id="btnAddNew"
             class="inline-flex items-center justify-center px-4 py-2 bg-purple-600 text-white text-sm font-medium rounded-md shadow-sm hover:bg-purple-700 focus:ring-2 focus:ring-purple-400 focus:outline-none transition">
             <i class="fa-solid fa-plus mr-2 text-sm"></i> Add New Office
@@ -25,6 +26,7 @@
     <!-- Form Create/Edit -->
     <div id="formContainer"
         class="hidden bg-white rounded-xl shadow-md p-6 mb-10 border border-gray-200 opacity-0 transform translate-y-3 transition-all duration-300 ease-out">
+
         <div class="flex justify-between items-center mb-6">
             <h2 id="formTitle" class="text-xl font-semibold text-gray-800">Add New Office</h2>
             <button id="btnCancel" class="text-gray-400 hover:text-gray-600">
@@ -98,15 +100,17 @@
                         <td class="px-4 py-3">{{ $office->address ?? '-' }}</td>
                         <td class="px-4 py-3 text-center">
                             <div class="flex items-center justify-center gap-2">
+
                                 <button
                                     class="btnEdit flex items-center justify-center w-8 h-8 text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 rounded-md transition"
-                                    data-id="{{ $office->id }}" data-office_name="{{ $office->office_name }}"
+                                    data-id="{{ $office->id }}"
+                                    data-office_name="{{ $office->office_name }}"
                                     data-address="{{ $office->address }}">
                                     <i class="fa-solid fa-pen text-sm"></i>
                                 </button>
 
-                                <form action="{{ route('admin.data-office.destroy', $office->id) }}" method="POST"
-                                    onsubmit="return confirm('Delete this office?')">
+                                <form action="{{ route('admin.data-office.destroy', $office->id) }}"
+                                    method="POST" onsubmit="return confirm('Delete this office?')">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
@@ -114,6 +118,7 @@
                                         <i class="fa-solid fa-trash text-sm"></i>
                                     </button>
                                 </form>
+
                             </div>
                         </td>
                     </tr>
@@ -191,6 +196,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 renderTable();
             }
         });
+
         nextBtn.addEventListener('click', () => {
             if (currentPage < totalPages) {
                 currentPage++;
@@ -214,8 +220,11 @@ document.addEventListener('DOMContentLoaded', () => {
         renderTable();
     });
 
-    // --- FORM TOGGLE ---
+    // --- FORM TOGGLE (FIXED BUTTON ADD) ---
     function toggleForm(show) {
+        // Hide or show Add button
+        btnAddNew.classList.toggle('hidden', show);
+
         if (show) {
             formContainer.classList.remove('hidden');
             tableContainer.classList.add('hidden');
@@ -255,6 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
             formMethod.value = 'PUT';
             officeNameInput.value = office_name;
             addressInput.value = address;
+
             toggleForm(true);
         });
     });

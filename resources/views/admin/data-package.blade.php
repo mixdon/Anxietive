@@ -65,8 +65,7 @@
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Detail Duration</label>
-                    <input type="text" name="detail_duration_input" id="detail_duration_input"
-                        placeholder="Example: 30,45,60"
+                    <input type="text" name="detail_duration_input" id="detail_duration_input" placeholder="Example: 30,45,60"
                         class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none">
                 </div>
             </div>
@@ -86,8 +85,7 @@
 
     <!-- Table Section -->
     <div id="tableContainer" class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
-        <div
-            class="p-5 border-b border-gray-200 flex flex-wrap items-center justify-between gap-3 sm:flex-nowrap bg-gray-50">
+        <div class="p-5 border-b border-gray-200 flex flex-wrap items-center justify-between gap-3 sm:flex-nowrap bg-gray-50">
             <h3 class="text-lg font-semibold text-gray-800 whitespace-nowrap">Package List</h3>
             <div class="flex flex-wrap gap-3 items-center">
                 <select id="rowsPerPage"
@@ -103,8 +101,6 @@
         </div>
 
         <div class="overflow-x-auto scroll-smooth pb-2">
-
-
             <table id="packageTable" class="min-w-[800px] w-full text-sm text-left">
                 <thead class="bg-gray-100 text-gray-600 uppercase text-xs tracking-wider border-b">
                     <tr>
@@ -117,6 +113,7 @@
                         <th class="px-4 py-3 text-center">Actions</th>
                     </tr>
                 </thead>
+
                 <tbody class="divide-y divide-gray-100 text-gray-700">
                     @forelse($packages as $package)
                     <tr class="hover:bg-purple-50 transition-colors">
@@ -126,14 +123,7 @@
                         <td class="px-4 py-3">{{ $package->times }}</td>
                         <td class="px-4 py-3">Rp {{ number_format($package->amount, 0, ',', '.') }}</td>
                         <td class="px-4 py-3">
-
-                            <img src="<?= $package->image ?>" alt="" class="w-10 h-10 object-cover rounded-md border">
-
-                            <!-- @if($package->image)
-                            <img src="<?= asset('storage/' . $package->image) ?? "https://storage.anxietive.com/assets/resource-web/ .$package->image" ?>" class="w-10 h-10 object-cover rounded-md border">
-                            @else
-                            <span class="text-gray-400">No Image</span>
-                            @endif -->
+                            <img src="<?= $package->image ?>" class="w-10 h-10 object-cover rounded-md border">
                         </td>
                         <td class="px-4 py-3 text-center">
                             <div class="flex items-center justify-center gap-2">
@@ -168,19 +158,18 @@
                     </tr>
                     @endforelse
                 </tbody>
+
             </table>
         </div>
 
-        <!-- Pagination -->
         <div id="paginationContainer"
-            class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t bg-gray-50 text-sm text-gray-700 text-center sm:text-left">
+            class="flex flex-col sm:flex-row items-center justify-between gap-3 px-5 py-4 border-t bg-gray-50 text-sm text-gray-700">
             <p id="paginationInfo"></p>
             <div class="flex items-center gap-2" id="paginationButtons"></div>
         </div>
     </div>
 </div>
 
-<!-- Scripts -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
     const rows = [...document.querySelectorAll('#packageTable tbody tr')];
@@ -194,6 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnAddNew = document.getElementById('btnAddNew');
     const btnCancel = document.getElementById('btnCancel');
     const btnCancel2 = document.getElementById('btnCancel2');
+
     const form = document.getElementById('packageForm');
     const formTitle = document.getElementById('formTitle');
     const formMethod = document.getElementById('formMethod');
@@ -202,55 +192,55 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentPage = 1;
     let rowsPerPage = parseInt(rowsPerPageSelect.value);
 
-    // --- PAGINATION + SEARCH ---
     function renderTable() {
-        const filteredRows = rows.filter(row =>
-            row.innerText.toLowerCase().includes(searchInput.value.toLowerCase())
+        const filtered = rows.filter(r =>
+            r.innerText.toLowerCase().includes(searchInput.value.toLowerCase())
         );
 
-        const total = filteredRows.length;
+        const total = filtered.length;
         const totalPages = Math.ceil(total / rowsPerPage);
 
-        rows.forEach(row => row.classList.add('hidden'));
-        const start = (currentPage - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-        filteredRows.slice(start, end).forEach(row => row.classList.remove('hidden'));
+        rows.forEach(r => r.classList.add('hidden'));
+        filtered.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage)
+            .forEach(r => r.classList.remove('hidden'));
 
         paginationContainer.innerHTML = `
-            <button id="prevPage" class="px-3 py-1 border rounded-md hover:bg-gray-100 ${currentPage === 1 ? 'opacity-40 cursor-not-allowed' : ''}">&lt;</button>
+            <button id="prevPage" class="px-3 py-1 border rounded-md hover:bg-gray-100">&lt;</button>
             <span>Page ${currentPage} of ${totalPages || 1}</span>
-            <button id="nextPage" class="px-3 py-1 border rounded-md hover:bg-gray-100 ${currentPage === totalPages || totalPages === 0 ? 'opacity-40 cursor-not-allowed' : ''}">&gt;</button>
+            <button id="nextPage" class="px-3 py-1 border rounded-md hover:bg-gray-100">&gt;</button>
         `;
 
-        document.getElementById('paginationInfo').textContent =
-            `Showing ${total ? start + 1 : 0}–${Math.min(end, total)} of ${total} entries`;
+        paginationInfo.textContent =
+            `Showing ${total ? (currentPage - 1) * rowsPerPage + 1 : 0}–${Math.min(currentPage * rowsPerPage, total)} of ${total} entries`;
 
         document.getElementById('prevPage').onclick = () => {
             if (currentPage > 1) { currentPage--; renderTable(); }
         };
+
         document.getElementById('nextPage').onclick = () => {
             if (currentPage < totalPages) { currentPage++; renderTable(); }
         };
     }
 
-    rowsPerPageSelect.addEventListener('change', () => {
+    rowsPerPageSelect.onchange = () => {
         rowsPerPage = parseInt(rowsPerPageSelect.value);
         currentPage = 1;
         renderTable();
-    });
+    };
 
-    searchInput.addEventListener('input', () => {
+    searchInput.oninput = () => {
         currentPage = 1;
         renderTable();
-    });
+    };
 
-    // --- TOGGLE FORM ---
-    function toggleForm(show, editMode = false) {
+    // 🟣 PERBAIKAN: Sembunyikan tombol Add saat form muncul
+    function toggleForm(show) {
+        btnAddNew.classList.toggle('hidden', show);
+
         if (show) {
-            tableContainer.classList.add('hidden');
             formContainer.classList.remove('hidden');
+            tableContainer.classList.add('hidden');
             setTimeout(() => formContainer.classList.remove('opacity-0', 'translate-y-3'), 10);
-            if (!editMode) form.reset();
         } else {
             formContainer.classList.add('opacity-0', 'translate-y-3');
             setTimeout(() => {
@@ -260,32 +250,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    btnAddNew.addEventListener('click', () => {
+    btnAddNew.onclick = () => {
         form.reset();
         form.action = "{{ route('admin.data-package.store') }}";
         formMethod.value = 'POST';
-        formTitle.textContent = 'Add New Package';
         packageId.value = '';
+        formTitle.textContent = 'Add New Package';
         toggleForm(true);
-    });
+    };
 
-    btnCancel.addEventListener('click', () => toggleForm(false));
-    btnCancel2.addEventListener('click', () => toggleForm(false));
+    btnCancel.onclick = () => toggleForm(false);
+    btnCancel2.onclick = () => toggleForm(false);
 
-    // --- EDIT BUTTONS ---
+    // Edit
     document.querySelectorAll('.btnEdit').forEach(btn => {
-        btn.addEventListener('click', () => {
-            toggleForm(true, true);
+        btn.onclick = () => {
+            toggleForm(true);
             formTitle.textContent = 'Edit Package';
             form.action = `/admin/data-package/${btn.dataset.id}`;
             formMethod.value = 'PUT';
             packageId.value = btn.dataset.id;
+
             document.getElementById('judul_package').value = btn.dataset.judul;
             document.getElementById('id_office').value = btn.dataset.id_office;
             document.getElementById('times').value = btn.dataset.times;
             document.getElementById('amount').value = btn.dataset.amount;
             document.getElementById('detail_duration_input').value = btn.dataset.detail || '';
-        });
+        };
     });
 
     renderTable();

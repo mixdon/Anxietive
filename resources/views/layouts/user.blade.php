@@ -6,17 +6,15 @@
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <title>@yield('title', 'anxietive')</title>
 
-    {{-- Google Fonts --}}
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-
     {{-- Vite --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     @stack('styles')
 
     <style>
+        /* Font sistem Apple (mirip San Francisco) */
         body {
-            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, "Segoe UI",
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI",
                 "Helvetica Neue", Arial, sans-serif;
         }
 
@@ -33,7 +31,6 @@
             opacity: 1;
             visibility: visible;
         }
-
     </style>
 </head>
 
@@ -195,7 +192,6 @@
         </div>
     </footer>
 
-
     {{-- SCRIPT MENU --}}
     <script>
         const menuToggle = document.getElementById('menu-toggle');
@@ -211,6 +207,18 @@
             menu.classList.add('hidden');
             menu.classList.remove('flex');
         });
+
+    </script>
+
+    <script src="{{ asset('js/jquery.js') }}"></script>
+    <script src="{{ asset('js/toastr.min.js') }}"></script>
+    <script>
+        toastr.options = {
+            "closeButton": true, // ✅ tombol X aktif
+            "progressBar": true, // (opsional) tampilkan progress bar
+            "positionClass": "toast-top-right", // posisi notifikasi
+            "timeOut": "4000" // durasi 4 detik
+        };
 
     </script>
 

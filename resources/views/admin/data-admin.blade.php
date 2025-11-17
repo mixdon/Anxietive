@@ -101,6 +101,7 @@
 
         <!-- Responsive Table -->
         <div class="overflow-x-auto">
+
             <!-- Desktop Table -->
             <table id="adminTable" class="hidden sm:table min-w-full text-sm text-left border-collapse">
                 <thead class="bg-gray-50 text-gray-600 uppercase text-xs tracking-wider border-b">
@@ -121,8 +122,14 @@
                             <td class="px-6 py-3">{{ $admin->fullname ?? '-' }}</td>
                             <td class="px-6 py-3">{{ $admin->role->role ?? '-' }}</td>
                             <td class="px-6 py-3">{{ $admin->created_at->format('Y-m-d') }}</td>
+
+                            <!-- ACTION BUTTONS FIXED STYLE -->
                             <td class="px-6 py-3 text-center flex flex-col sm:flex-row justify-center items-center gap-2">
-                                <button class="btnEdit px-3 py-1 bg-blue-600 text-white rounded-lg text-xs hover:bg-blue-500 transition"
+
+                                <!-- Edit Button (Soft Blue) -->
+                                <button class="btnEdit px-3 py-1 rounded-lg text-xs
+                                    bg-blue-50 text-blue-600 border border-blue-200
+                                    hover:bg-blue-100 hover:border-blue-300 transition"
                                     data-id="{{ $admin->id }}"
                                     data-username="{{ $admin->username }}"
                                     data-fullname="{{ $admin->fullname }}"
@@ -130,15 +137,19 @@
                                     <i class="fa-solid fa-pen"></i>
                                 </button>
 
+                                <!-- Delete Button (Soft Red) -->
                                 <form action="{{ route('admin.data-admin.destroy', $admin->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
                                         onclick="return confirm('Are you sure you want to delete this admin?')"
-                                        class="px-3 py-1 bg-red-600 text-white rounded-lg text-xs hover:bg-red-500 transition">
+                                        class="px-3 py-1 rounded-lg text-xs
+                                        bg-red-50 text-red-600 border border-red-200
+                                        hover:bg-red-100 hover:border-red-300 transition">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
                                 </form>
+
                             </td>
                         </tr>
                     @empty
@@ -160,7 +171,11 @@
                             <div><span class="font-medium">Role:</span> {{ $admin->role->role ?? '-' }}</div>
                         </div>
                         <div class="flex justify-end gap-2 mt-3">
-                            <button class="btnEdit px-3 py-1 bg-blue-600 text-white rounded-md text-xs hover:bg-blue-500 transition"
+
+                            <!-- Edit Soft -->
+                            <button class="btnEdit px-3 py-1 rounded-lg text-xs
+                                bg-blue-50 text-blue-600 border border-blue-200
+                                hover:bg-blue-100 hover:border-blue-300 transition"
                                 data-id="{{ $admin->id }}"
                                 data-username="{{ $admin->username }}"
                                 data-fullname="{{ $admin->fullname }}"
@@ -168,21 +183,26 @@
                                 <i class="fa-solid fa-pen"></i>
                             </button>
 
+                            <!-- Delete Soft -->
                             <form action="{{ route('admin.data-admin.destroy', $admin->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit"
                                     onclick="return confirm('Are you sure you want to delete this admin?')"
-                                    class="px-3 py-1 bg-red-600 text-white rounded-md text-xs hover:bg-red-500 transition">
+                                    class="px-3 py-1 rounded-lg text-xs
+                                    bg-red-50 text-red-600 border border-red-200
+                                    hover:bg-red-100 hover:border-red-300 transition">
                                     <i class="fa-solid fa-trash"></i>
                                 </button>
                             </form>
+
                         </div>
                     </div>
                 @empty
                     <div class="text-center text-gray-500 py-6">No admins found.</div>
                 @endforelse
             </div>
+
         </div>
 
         <!-- Pagination -->
@@ -210,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const formMethod = document.getElementById('formMethod');
 
     const lengthMenu = document.getElementById('lengthMenu');
-    const paginationInfo = document.getElementById('pageInfo');
+    const pageInfo = document.getElementById('pageInfo');
     const showingInfo = document.getElementById('showingInfo');
     const prevBtn = document.getElementById('prevPage');
     const nextBtn = document.getElementById('nextPage');
@@ -221,18 +241,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function renderTable() {
         const query = searchInput.value.toLowerCase();
-        const allRows = Array.from(document.querySelectorAll('#adminTable tbody tr'));
-        const filteredRows = allRows.filter(row => row.innerText.toLowerCase().includes(query));
-        const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+        const rows = Array.from(document.querySelectorAll('#adminTable tbody tr'));
+        const filtered = rows.filter(row => row.innerText.toLowerCase().includes(query));
+        const totalPages = Math.ceil(filtered.length / rowsPerPage);
+
         currentPage = Math.min(currentPage, totalPages || 1);
 
-        allRows.forEach(row => row.style.display = 'none');
-        filteredRows.forEach((row, index) => {
-            row.style.display = (index >= (currentPage - 1) * rowsPerPage && index < currentPage * rowsPerPage) ? '' : 'none';
+        rows.forEach(row => (row.style.display = 'none'));
+        filtered.forEach((row, i) => {
+            row.style.display = i >= (currentPage - 1) * rowsPerPage && i < currentPage * rowsPerPage ? '' : 'none';
         });
 
-        paginationInfo.textContent = `Page ${currentPage} of ${totalPages || 1}`;
-        showingInfo.textContent = `Showing ${(currentPage - 1) * rowsPerPage + 1}–${Math.min(currentPage * rowsPerPage, filteredRows.length)} of ${filteredRows.length} entries`;
+        pageInfo.textContent = `Page ${currentPage} of ${totalPages || 1}`;
+        showingInfo.textContent = `Showing ${(currentPage - 1) * rowsPerPage + 1}–${Math.min(currentPage * rowsPerPage, filtered.length)} of ${filtered.length} entries`;
+
         prevBtn.disabled = currentPage === 1;
         nextBtn.disabled = currentPage === totalPages;
     }
@@ -243,22 +265,38 @@ document.addEventListener('DOMContentLoaded', () => {
         renderTable();
     });
 
-    prevBtn.addEventListener('click', () => { if (currentPage > 1) { currentPage--; renderTable(); } });
-    nextBtn.addEventListener('click', () => { currentPage++; renderTable(); });
-    searchInput.addEventListener('input', renderTable);
+    prevBtn.addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            renderTable();
+        }
+    });
 
+    nextBtn.addEventListener('click', () => {
+        currentPage++;
+        renderTable();
+    });
+
+    searchInput.addEventListener('input', renderTable);
     renderTable();
 
     function toggleForm(show) {
         if (show) {
             tableContainer.classList.add('hidden');
+            btnAddNew.classList.add('hidden');
+
             formContainer.classList.remove('hidden');
-            setTimeout(() => formContainer.classList.remove('opacity-0', 'translate-y-3'), 10);
+
+            setTimeout(() => {
+                formContainer.classList.remove('opacity-0', 'translate-y-3');
+            }, 10);
         } else {
             formContainer.classList.add('opacity-0', 'translate-y-3');
+
             setTimeout(() => {
                 formContainer.classList.add('hidden');
                 tableContainer.classList.remove('hidden');
+                btnAddNew.classList.remove('hidden');
             }, 300);
         }
     }
@@ -274,10 +312,10 @@ document.addEventListener('DOMContentLoaded', () => {
     btnCancel.addEventListener('click', () => toggleForm(false));
     btnCancel2.addEventListener('click', () => toggleForm(false));
 
-    // Handle Edit
     document.querySelectorAll('.btnEdit').forEach(btn => {
         btn.addEventListener('click', () => {
             const id = btn.dataset.id;
+
             document.getElementById('username').value = btn.dataset.username;
             document.getElementById('fullname').value = btn.dataset.fullname;
             document.getElementById('roles').value = btn.dataset.role;
@@ -292,4 +330,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 </script>
+
 @endsection

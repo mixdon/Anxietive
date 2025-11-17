@@ -238,14 +238,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function toggleForm(show) {
         if (show) {
+            // Hide table and add button
             tableContainer.classList.add('hidden');
+            btnAddNew.classList.add('hidden');
+
+            // Show form
             formContainer.classList.remove('hidden');
             setTimeout(() => formContainer.classList.remove('opacity-0', 'translate-y-3'), 10);
         } else {
+            // Hide form
             formContainer.classList.add('opacity-0', 'translate-y-3');
             setTimeout(() => {
                 formContainer.classList.add('hidden');
+
+                // Show table and add button
                 tableContainer.classList.remove('hidden');
+                btnAddNew.classList.remove('hidden');
+
             }, 300);
         }
     }
@@ -262,10 +271,11 @@ document.addEventListener('DOMContentLoaded', () => {
     btnCancel.addEventListener('click', () => toggleForm(false));
     btnCancel2.addEventListener('click', () => toggleForm(false));
 
-    // EDIT BUTTONS
+    // EDIT BUTTON
     document.querySelectorAll('.btnEdit').forEach(btn => {
         btn.addEventListener('click', () => {
             const id = btn.dataset.id;
+
             document.getElementById('email').value = btn.dataset.email;
             document.getElementById('fullname').value = btn.dataset.fullname;
             document.getElementById('phone').value = btn.dataset.phone;

@@ -3,7 +3,8 @@
 @section('title', __('messages.contact_title') . ' | anxietive')
 
 @section('content')
-<!--  HERO / INTRO  -->
+
+<!-- HERO -->
 <section class="max-w-3xl mx-auto px-6 py-12 text-center">
     <h1 class="mt-4 text-4xl md:text-6xl font-bold text-gray-900 mb-3">
         {{ __('messages.contact_title') }}
@@ -13,82 +14,93 @@
     </p>
 </section>
 
-<!--  CONTACT INFO + FORM  -->
+<!-- FOTO + FORM -->
 <section class="w-full">
-    <div class="grid md:grid-cols-2 gap-0">
-        <!-- Left: Image -->
-        <div class="h-full">
-            <img src="{{ asset('images/contact/contact001.jpg') }}" alt="Contact Image"
-                class="w-full h-full object-cover">
+    <div class="grid md:grid-cols-[3fr_2fr] gap-0">
+
+        <!-- LEFT: FOTO FULL -->
+        <div class="bg-white">
+            <img src="{{ asset('images/contact/contact001.png') }}" alt="Contact Image"
+                class="w-full h-full object-cover md:object-contain">
         </div>
 
-        <!-- Right: Info + Form -->
-        <div class="bg-gray-100 flex flex-col justify-center text-gray-700 h-full">
+        <!-- RIGHT: FORM MENGIKUTI TINGGI FOTO -->
+        <div class="bg-gray-50 flex flex-col justify-center text-gray-700 p-10 h-auto">
+
             <!-- Contact Info -->
-            <div class="mb-4 space-y-1 px-6 py-6">
-                <h3 class="text-xl md:text-2xl font-semibold text-gray-900 tracking-wide">
+            <div class="pb-4">
+                <h3 class="text-xl font-semibold text-gray-900 tracking-wide mb-1">
                     ANXIETIVE SELF PHOTO
                 </h3>
 
-                <p class="text-gray-700 font-medium text-base md:text-base">
+                <p class="text-gray-600 text-sm leading-relaxed">
                     {{ __('messages.contact_address') }}
                 </p>
 
-                <p class="text-gray-700 font-medium text-base md:text-base">
+                <p class="text-gray-600 text-sm mt-1">
                     {{ __('messages.contact_google') }}
                     <span class="mx-2 text-gray-400">|</span>
                     {{ __('messages.contact_phone') }}
                 </p>
             </div>
 
-            <!-- Contact Form -->
-            <form action="#" method="POST" class="space-y-5 px-6 pb-6">
+            <!-- Form -->
+            <form action="#" method="POST" class="space-y-4">
                 @csrf
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                <!-- ROW 1 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div>
-                        <label for="first_name" class="block text-base font-medium text-gray-700 mb-1">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">
                             {{ __('messages.contact_first_name') }}
                         </label>
-                        <input type="text" name="first_name" id="first_name"
-                            class="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-700 text-base shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition">
+                        <input type="text" name="first_name" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm
+                                   focus:border-indigo-500 focus:ring-indigo-200 transition">
                     </div>
+
                     <div>
-                        <label for="last_name" class="block text-base font-medium text-gray-700 mb-1">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">
                             {{ __('messages.contact_last_name') }}
                         </label>
-                        <input type="text" name="last_name" id="last_name"
-                            class="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-700 text-base shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition">
+                        <input type="text" name="last_name" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm
+                                   focus:border-indigo-500 focus:ring-indigo-200 transition">
                     </div>
                 </div>
 
+                <!-- EMAIL -->
                 <div>
-                    <label for="email" class="block text-base font-medium text-gray-700 mb-1">
+                    <label class="block text-xs font-medium text-gray-600 mb-1">
                         {{ __('messages.contact_email') }}
                     </label>
-                    <input type="email" name="email" id="email" required
-                        class="w-full rounded-lg border border-gray-300 px-4 py-3 text-gray-700 text-base shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition">
+                    <input type="email" name="email" required class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm
+                               focus:border-indigo-500 focus:ring-indigo-200 transition">
                 </div>
 
+                <!-- MESSAGE -->
                 <div>
-                    <label for="message" class="block text-base font-medium text-gray-700 mb-1">
+                    <label class="block text-xs font-medium text-gray-600 mb-1">
                         {{ __('messages.contact_message') }}
                     </label>
-                    <textarea name="message" id="message" rows="3"
-                        class="w-full rounded-lg border border-gray-300 px-4 py-2 text-gray-700 text-base shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 transition max-h-24 overflow-y-auto resize-none"></textarea>
+                    <textarea name="message" rows="3" class="w-full rounded-md border border-gray-300 px-3 py-2 text-sm
+                               focus:border-indigo-500 focus:ring-indigo-200 transition resize-none"></textarea>
                 </div>
 
-                <div class="flex justify-end">
-                    <button type="submit"
-                        class="px-8 py-3 bg-indigo-600 text-white rounded-lg text-base font-medium shadow-md hover:bg-indigo-700 transition">
+                <!-- BUTTON -->
+                <div class="flex justify-end pt-2">
+                    <button type="submit" class="px-6 py-2 bg-indigo-600 text-white rounded-md text-sm font-medium shadow
+                               hover:bg-indigo-700 transition">
                         {{ __('messages.contact_send') }}
                     </button>
                 </div>
+
             </form>
         </div>
+
     </div>
 </section>
 
-<!--  OPENING HOURS  -->
+
+<!-- OPENING HOURS -->
 <section class="bg-gray-200 my-10 py-14">
     <div class="max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-center items-start md:items-center gap-x-36">
         <h2 class="text-4xl font-bold mb-6 md:mb-0 text-gray-900">
@@ -116,4 +128,5 @@
         allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
     </iframe>
 </section>
+
 @endsection

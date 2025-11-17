@@ -51,6 +51,7 @@
                         <img src="{{ asset('images/logo/mata_tertutup.png') }}" alt="Toggle" class="h-5 w-5">
                     </button>
                 </div>
+                <p class="text-right" style="font-size: 12px;">Lupa Password ? <span><a href="/lupa-password" class="text-blue-600 hover:text-blue-800 underline font-medium">Klik disini</a></span></p>
             </div>
 
             {{-- Tombol Submit --}}
