@@ -19,11 +19,8 @@
             <div class="border rounded-2xl shadow hover:shadow-lg flex flex-col bg-white relative overflow-hidden">
                 <!-- Image -->
                 <div class="relative w-full h-64">
-                    <img 
-                        src="{{ $studio->image ? asset('storage/'.$studio->image) : asset('images/default-studio.jpg') }}" 
-                        alt="{{ $studio->judul_package }}"
-                        class="w-full h-full object-cover rounded-t-2xl"
-                    >
+                    <img src="{{ $studio->image ? asset('storage/'.$studio->image) : asset('images/default-studio.jpg') }}"
+                        alt="{{ $studio->judul_package }}" class="w-full h-full object-cover rounded-t-2xl">
                     <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
                         <span class="text-white font-bold text-xl md:text-2xl text-center px-2 tracking-wide">
                             {{ $studio->judul_package }}
@@ -51,9 +48,22 @@
                     </div>
 
                     <a href="{{ route('booking.schedule', ['id' => $studio->id]) }}"
-                        class="absolute bottom-5 left-5 inline-block px-8 py-3 bg-blue-600 text-white rounded-md text-base font-semibold hover:bg-blue-500 transition shadow">
+                        class="absolute bottom-5 left-5 inline-block px-8 py-3 bg-[#510F0F] text-white rounded-md text-base font-semibold hover:bg-[#6A1414] transition shadow">
                         {{ __('messages.booking_button') }}
                     </a>
+
+                    <!--
+                    <a href="{{ route('booking.schedule', ['id' => $studio->id]) }}"
+                    class="absolute bottom-5 left-5 inline-block px-8 py-3 bg-[#661212] text-white rounded-md text-base font-semibold hover:bg-[#7A1616] transition shadow">
+                        {{ __('messages.booking_button') }}
+                    </a>
+
+                    <a href="{{ route('booking.schedule', ['id' => $studio->id]) }}"
+                    class="absolute bottom-5 left-5 inline-block px-8 py-3 bg-[#3E0A0A] text-white rounded-md text-base font-semibold hover:bg-[#520D0D] transition shadow">
+                        {{ __('messages.booking_button') }}
+                    </a>
+                    -->
+
                 </div>
             </div>
             @endforeach

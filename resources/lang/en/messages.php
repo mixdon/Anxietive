@@ -20,8 +20,8 @@ return [
     'about_full_story' => 'Full Story',
     'about_title' => 'About',
     'about_intro' => 'Anxietive is a self-photo studio built on the belief that every moment, no matter how small, can be transformed into something creative and meaningful. Inspired by the idea of turning anxiety into art, we provide a space where you can be yourself and capture your best expressions.',
-    'about_section1_title' => 'From Anxiety to Creativity',
-    'about_section1_text1' => 'The name “Anxietive” comes from the idea of transforming nervousness into creativity. We believe photography is more than just pictures — it’s a way to embrace yourself, overcome insecurities, and celebrate your uniqueness.',
+    'about_section1_title' => 'From Anxiety to Creative',
+    'about_section1_text1' => 'The name “Anxietive” comes from the idea of transforming nervousness into creative. We believe photography is more than just pictures — it’s a way to embrace yourself, overcome insecurities, and celebrate your uniqueness.',
     'about_section1_text2' => 'In every session, we want you to feel comfortable, free, and confident in expressing who you truly are. That’s why our studio is designed for privacy, comfort, and authenticity.',
     'about_section2_title' => 'A Space for Your True Self',
     'about_section2_text1' => 'Whether you come to create memories with friends, celebrate special moments, or simply enjoy expressing yourself, Anxietive is here for you. Every corner of our studio is made to inspire creativity and authenticity.',
@@ -49,7 +49,6 @@ return [
     'pricelist_cta_title' => 'Ready to Capture Your Best Moments?',
     'pricelist_cta_text' => 'Book your self–portrait session today and create timeless memories with Anxietive. Choose your background, strike your pose, and let us handle the rest!',
     'pricelist_cta_button' => 'Book Now',
-    'pricelist_gallery_title' => 'Background Selection',
     'color_white' => 'White',
     'color_grey' => 'Grey',
     'color_navy' => 'Navy',
@@ -57,8 +56,8 @@ return [
     'color_red' => 'Red',
 
     // Booking page
-    'booking_title' => 'Capture Your Best Moments ✨',
-    'booking_subtitle' => 'Come visit <span class="font-semibold text-gray-900">Anxietive</span> in your city, pick your favorite studio type, and let’s create memories that last forever. 📸',
+    'booking_title' => 'Self Photo Studio',
+    'booking_subtitle' => 'Pick your location, visit <span class="font-semibold text-gray-900">Anxietive</span> in your city, choose your favorite studio type, and create unforgettable memories. 📸',
     'booking_minutes' => 'minutes',
     'booking_button' => 'Book Now',
 

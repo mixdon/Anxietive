@@ -20,8 +20,8 @@ return [
     'about_full_story' => 'Kisah Lengkap',
     'about_title' => 'Tentang',
     'about_intro' => 'Anxietive adalah studio foto mandiri yang dibangun dengan keyakinan bahwa setiap momen, sekecil apa pun, dapat diubah menjadi sesuatu yang kreatif dan bermakna. Terinspirasi oleh ide untuk mengubah kecemasan menjadi karya seni, kami menyediakan ruang di mana Anda dapat menjadi diri sendiri dan menangkap ekspresi terbaik Anda.',
-    'about_section1_title' => 'Dari Cemas Menjadi Kreatif',
-    'about_section1_text1' => 'Nama “Anxietive” berasal dari gagasan untuk mengubah rasa gugup menjadi kreativitas. Kami percaya bahwa fotografi lebih dari sekadar gambar — ini adalah cara untuk menerima diri sendiri, mengatasi rasa tidak percaya diri, dan merayakan keunikan Anda.',
+    'about_section1_title' => 'From Anxiety to Creative',
+    'about_section1_text1' => 'Nama “Anxietive” berasal dari gagasan untuk mengubah rasa gugup menjadi creative. Kami percaya bahwa fotografi bukan hanya tentang gambar — tetapi juga cara untuk menerima diri sendiri, mengatasi rasa tidak percaya diri, dan merayakan keunikanmu.',
     'about_section1_text2' => 'Dalam setiap sesi, kami ingin Anda merasa nyaman, bebas, dan percaya diri mengekspresikan siapa Anda sebenarnya. Itulah sebabnya studio kami dirancang untuk privasi, kenyamanan, dan keaslian.',
     'about_section2_title' => 'Ruang untuk Diri Sejati Anda',
     'about_section2_text1' => 'Baik Anda datang untuk menciptakan kenangan bersama teman, merayakan momen spesial, atau sekadar menikmati waktu berekspresi, Anxietive hadir untuk Anda. Setiap sudut studio kami dibuat untuk menginspirasi kreativitas dan keaslian.',
@@ -49,7 +49,6 @@ return [
     'pricelist_cta_title' => 'Siap untuk Mengabadikan Momen Terbaikmu?',
     'pricelist_cta_text' => 'Pesan sesi foto mandiri kamu hari ini dan ciptakan kenangan abadi bersama Anxietive. Pilih latar belakangmu, atur pose terbaikmu, dan biarkan kami mengurus sisanya!',
     'pricelist_cta_button' => 'Pesan Sekarang',
-    'pricelist_gallery_title' => 'Pilihan Latar Belakang',
     'color_white' => 'Putih',
     'color_grey' => 'Abu-abu',
     'color_navy' => 'Biru Dongker',
@@ -57,8 +56,8 @@ return [
     'color_red' => 'Merah',
 
     // Booking page
-    'booking_title' => 'Abadikan Momen Terbaikmu ✨',
-    'booking_subtitle' => 'Kunjungi <span class="font-semibold text-gray-900">Anxietive</span> di kotamu, pilih tipe studio favoritmu, dan ciptakan kenangan yang tak terlupakan. 📸',
+    'booking_title' => 'Self Photo Studio',
+    'booking_subtitle' => 'Pilih lokasimu, kunjungi <span class="font-semibold text-gray-900">Anxietive</span> di kotamu, pilih tipe studio favoritmu, dan ciptakan kenangan yang tak terlupakan. 📸',
     'booking_minutes' => 'menit',
     'booking_button' => 'Pesan Sekarang',
 

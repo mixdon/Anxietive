@@ -27,8 +27,6 @@
 
 <!-- GALLERY: FULL WIDTH SWIPER -->
 <section class="pt-10 bg-white">
-    <h2 class="text-3xl md:text-4xl font-bold text-center mb-10">{{ __('messages.pricelist_gallery_title') }}</h2>
-
     <div class="w-full">
         <!-- Swiper container -->
         <div class="swiper mySwiper">

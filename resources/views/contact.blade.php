@@ -24,7 +24,7 @@
                 class="w-full h-full object-cover md:object-contain">
         </div>
 
-        <!-- RIGHT: FORM MENGIKUTI TINGGI FOTO -->
+        <!-- RIGHT: FORM -->
         <div class="bg-gray-50 flex flex-col justify-center text-gray-700 p-10 h-auto">
 
             <!-- Contact Info -->
@@ -99,7 +99,6 @@
     </div>
 </section>
 
-
 <!-- OPENING HOURS -->
 <section class="bg-gray-200 my-10 py-14">
     <div class="max-w-5xl mx-auto px-6 flex flex-col md:flex-row justify-center items-start md:items-center gap-x-36">
@@ -120,13 +119,68 @@
     </div>
 </section>
 
-<!-- GOOGLE MAPS -->
-<section class="w-full h-96">
-    <iframe
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1992.234567!2d101.4468282!3d0.5069245!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31d5afb17dc67f4f%3A0x875d8291f3d68d9c!2sANXIETIVE%20SELF%20PHOTO%20PEKANBARU!5e0!3m2!1sid!2sid!4v169xxx"
-        width="100%" height="100%" style="border:0; filter: grayscale(60%) brightness(97%) contrast(92%);"
-        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+
+<!-- 3 LOKASI -->
+<section class="py-12 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-6">
+        <h2 class="text-3xl font-bold mb-8 text-gray-900 text-center">Pilih Lokasi Studio</h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+            <!-- BASE -->
+            <div onclick="setMap('base')" id="card-base"
+                class="location-card bg-white p-5 rounded-lg shadow hover:shadow-md transition cursor-pointer border-2 border-transparent">
+                <h3 class="text-xl font-semibold mb-2">Anxietive – Base</h3>
+                <p class="text-gray-600 text-sm">Cabang utama Pekanbaru.</p>
+            </div>
+
+            <!-- DELIMA -->
+            <div onclick="setMap('delima')" id="card-delima"
+                class="location-card bg-white p-5 rounded-lg shadow hover:shadow-md transition cursor-pointer border-2 border-transparent">
+                <h3 class="text-xl font-semibold mb-2">Anxietive – Delima</h3>
+                <p class="text-gray-600 text-sm">Cabang Delima Pekanbaru.</p>
+            </div>
+
+            <!-- LAMPUNG -->
+            <div onclick="setMap('lampung')" id="card-lampung"
+                class="location-card bg-white p-5 rounded-lg shadow hover:shadow-md transition cursor-pointer border-2 border-transparent">
+                <h3 class="text-xl font-semibold mb-2">Anxietive – Lampung</h3>
+                <p class="text-gray-600 text-sm">Cabang Lampung.</p>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- GOOGLE MAPS (HANYA SATU IFRAME) -->
+<section class="w-full h-96 mb-10">
+    <iframe id="mainMap"
+        src="https://www.google.com/maps?q=0.5071390678140608,101.44939236591618&hl=id&z=17&output=embed"
+        width="100%" height="100%"
+        style="border:0; filter: grayscale(60%) brightness(97%) contrast(92%); border-radius: 10px;"
+        allowfullscreen="" loading="lazy">
     </iframe>
 </section>
 
+<!-- SCRIPT -->
+<script>
+    const maps = {
+        base: "https://www.google.com/maps?q=0.5071390678140608,101.44939236591618&hl=id&z=17&output=embed",
+        delima: "https://www.google.com/maps?q=0.4676960836740406,101.40430828125844&hl=id&z=17&output=embed",
+        lampung: "https://www.google.com/maps?q=-5.420314073050791,105.26432076966127&hl=id&z=17&output=embed"
+    };
+
+    function setMap(loc) {
+        document.getElementById("mainMap").src = maps[loc];
+
+        document.querySelectorAll('.location-card')
+            .forEach(card => card.classList.remove('border-indigo-500', 'bg-indigo-50'));
+
+        document.getElementById(`card-${loc}`).classList.add('border-indigo-500', 'bg-indigo-50');
+
+        document.getElementById(`card-${loc}`).scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    window.onload = () => setMap('base');
+</script>
 @endsection
