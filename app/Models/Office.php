@@ -12,6 +12,11 @@ class Office extends Model
     protected $fillable = [
         'office_name',
         'address',
+        'email_kantor',
+        'no_wa_kantor',
+        'latitude',
+        'longitude',
+        'kode_office',
     ];
 
     public function packages()

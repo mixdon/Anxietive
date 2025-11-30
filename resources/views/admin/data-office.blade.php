@@ -39,16 +39,56 @@
             <input type="hidden" name="_method" id="formMethod" value="POST">
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <!-- Office Name -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Office Name</label>
                     <input type="text" name="office_name" id="office_name" required
                         class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none">
                 </div>
+
+                <!-- Address -->
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
                     <input type="text" name="address" id="address"
                         class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none">
                 </div>
+
+                <!-- Email Kantor -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Email Kantor</label>
+                    <input type="text" name="email_kantor" id="email_kantor"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none">
+                </div>
+
+                <!-- No WA Kantor -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">No. WA Kantor</label>
+                    <input type="text" name="no_wa_kantor" id="no_wa_kantor"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none">
+                </div>
+
+                <!-- Latitude -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Latitude</label>
+                    <input type="text" name="latitude" id="latitude"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none">
+                </div>
+
+                <!-- Longitude -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Longitude</label>
+                    <input type="text" name="longitude" id="longitude"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none">
+                </div>
+
+                <!-- Kode Office -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Kode Office</label>
+                    <input type="text" name="kode_office" id="kode_office"
+                        class="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none">
+                </div>
+
             </div>
 
             <div class="mt-6 flex justify-end gap-3">
@@ -69,6 +109,7 @@
         <div
             class="p-5 border-b border-gray-200 flex flex-wrap items-center justify-between gap-3 sm:flex-nowrap bg-gray-50">
             <h3 class="text-lg font-semibold text-gray-800 whitespace-nowrap">Office List</h3>
+
             <div class="flex flex-wrap gap-3 items-center">
                 <select id="rowsPerPage"
                     class="border border-gray-300 rounded-md px-3 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
@@ -77,38 +118,59 @@
                     <option value="25">25 rows</option>
                     <option value="50">50 rows</option>
                 </select>
+
                 <input type="text" id="tableSearch" placeholder="Search offices..."
                     class="w-full sm:w-64 border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none transition">
             </div>
         </div>
 
         <div class="overflow-x-auto scroll-smooth pb-2">
-            <table id="officeTable" class="min-w-[600px] w-full text-sm text-left">
+            <table id="officeTable" class="min-w-[900px] w-full text-sm text-left">
                 <thead class="bg-gray-100 text-gray-600 uppercase text-xs tracking-wider border-b">
                     <tr>
                         <th class="px-4 py-3">#</th>
-                        <th class="px-4 py-3">Office Name</th>
+                        <th class="px-4 py-3">Name</th>
                         <th class="px-4 py-3">Address</th>
+                        <th class="px-4 py-3">Email</th>
+                        <th class="px-4 py-3">WA</th>
+                        <th class="px-4 py-3">Latitude</th>
+                        <th class="px-4 py-3">Longitude</th>
+                        <th class="px-4 py-3">Kode Office</th>
                         <th class="px-4 py-3 text-center">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100 text-gray-700">
+
                     @forelse($offices as $office)
                     <tr class="hover:bg-purple-50 transition-colors">
+
                         <td class="px-4 py-3">{{ $loop->iteration }}</td>
-                        <td class="px-4 py-3 font-medium text-gray-800">{{ $office->office_name }}</td>
+                        <td class="px-4 py-3 font-medium">{{ $office->office_name }}</td>
                         <td class="px-4 py-3">{{ $office->address ?? '-' }}</td>
+                        <td class="px-4 py-3">{{ $office->email_kantor ?? '-' }}</td>
+                        <td class="px-4 py-3">{{ $office->no_wa_kantor ?? '-' }}</td>
+                        <td class="px-4 py-3">{{ $office->latitude ?? '-' }}</td>
+                        <td class="px-4 py-3">{{ $office->longitude ?? '-' }}</td>
+                        <td class="px-4 py-3">{{ $office->kode_office ?? '-' }}</td>
+
                         <td class="px-4 py-3 text-center">
                             <div class="flex items-center justify-center gap-2">
 
+                                <!-- EDIT -->
                                 <button
                                     class="btnEdit flex items-center justify-center w-8 h-8 text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 rounded-md transition"
                                     data-id="{{ $office->id }}"
                                     data-office_name="{{ $office->office_name }}"
-                                    data-address="{{ $office->address }}">
+                                    data-address="{{ $office->address }}"
+                                    data-email_kantor="{{ $office->email_kantor }}"
+                                    data-no_wa_kantor="{{ $office->no_wa_kantor }}"
+                                    data-latitude="{{ $office->latitude }}"
+                                    data-longitude="{{ $office->longitude }}"
+                                    data-kode_office="{{ $office->kode_office }}">
                                     <i class="fa-solid fa-pen text-sm"></i>
                                 </button>
 
+                                <!-- DELETE -->
                                 <form action="{{ route('admin.data-office.destroy', $office->id) }}"
                                     method="POST" onsubmit="return confirm('Delete this office?')">
                                     @csrf
@@ -121,12 +183,14 @@
 
                             </div>
                         </td>
+
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="4" class="text-center py-8 text-gray-500">No offices found.</td>
+                        <td colspan="9" class="text-center py-8 text-gray-500">No offices found.</td>
                     </tr>
                     @endforelse
+
                 </tbody>
             </table>
         </div>
@@ -140,9 +204,11 @@
     </div>
 </div>
 
+
 <!-- Scripts -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+
     const rows = [...document.querySelectorAll('#officeTable tbody tr')];
     const rowsPerPageSelect = document.getElementById('rowsPerPage');
     const paginationContainer = document.getElementById('paginationButtons');
@@ -157,13 +223,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const formTitle = document.getElementById('formTitle');
     const officeForm = document.getElementById('officeForm');
     const formMethod = document.getElementById('formMethod');
+
     const officeNameInput = document.getElementById('office_name');
     const addressInput = document.getElementById('address');
+    const emailInput = document.getElementById('email_kantor');
+    const waInput = document.getElementById('no_wa_kantor');
+    const latInput = document.getElementById('latitude');
+    const longInput = document.getElementById('longitude');
+    const kodeInput = document.getElementById('kode_office');
 
     let currentPage = 1;
     let rowsPerPage = parseInt(rowsPerPageSelect.value);
 
-    // --- TABLE PAGINATION & SEARCH ---
+
+    // PAGINATION + SEARCH
     function renderTable() {
         const filteredRows = rows.filter(row =>
             row.innerText.toLowerCase().includes(searchInput.value.toLowerCase())
@@ -175,6 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
         rows.forEach(row => row.classList.add('hidden'));
         const start = (currentPage - 1) * rowsPerPage;
         const end = start + rowsPerPage;
+
         filteredRows.slice(start, end).forEach(row => row.classList.remove('hidden'));
 
         paginationContainer.innerHTML = `
@@ -187,6 +261,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const prevBtn = document.getElementById('prevPage');
         const nextBtn = document.getElementById('nextPage');
+
         prevBtn.disabled = currentPage === 1;
         nextBtn.disabled = currentPage === totalPages || totalPages === 0;
 
@@ -204,9 +279,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        const showingStart = total === 0 ? 0 : start + 1;
-        const showingEnd = Math.min(end, total);
-        paginationInfo.textContent = `Showing ${showingStart}–${showingEnd} of ${total} entries`;
+        paginationInfo.textContent =
+            `Showing ${total === 0 ? 0 : start + 1}–${Math.min(end, total)} of ${total} entries`;
     }
 
     rowsPerPageSelect.addEventListener('change', () => {
@@ -220,9 +294,9 @@ document.addEventListener('DOMContentLoaded', () => {
         renderTable();
     });
 
-    // --- FORM TOGGLE (FIXED BUTTON ADD) ---
+
+    // FORM TOGGLE
     function toggleForm(show) {
-        // Hide or show Add button
         btnAddNew.classList.toggle('hidden', show);
 
         if (show) {
@@ -238,32 +312,43 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- ADD BUTTON ---
     btnAddNew.addEventListener('click', () => {
         formTitle.textContent = 'Add New Office';
         officeForm.action = "{{ route('admin.data-office.store') }}";
         formMethod.value = 'POST';
+
         officeNameInput.value = '';
         addressInput.value = '';
+        emailInput.value = '';
+        waInput.value = '';
+        latInput.value = '';
+        longInput.value = '';
+        kodeInput.value = '';
+
         toggleForm(true);
     });
 
-    // --- CANCEL BUTTONS ---
     btnCancel.addEventListener('click', () => toggleForm(false));
     btnCancel2.addEventListener('click', () => toggleForm(false));
 
-    // --- EDIT BUTTON ---
+    // EDIT BUTTON
     document.querySelectorAll('.btnEdit').forEach(btn => {
         btn.addEventListener('click', () => {
-            const id = btn.dataset.id;
-            const office_name = btn.dataset.office_name;
-            const address = btn.dataset.address;
 
             formTitle.textContent = 'Edit Office';
+
+            const id = btn.dataset.id;
+
             officeForm.action = `/admin/data-office/${id}`;
             formMethod.value = 'PUT';
-            officeNameInput.value = office_name;
-            addressInput.value = address;
+
+            officeNameInput.value = btn.dataset.office_name;
+            addressInput.value = btn.dataset.address;
+            emailInput.value = btn.dataset.email_kantor;
+            waInput.value = btn.dataset.no_wa_kantor;
+            latInput.value = btn.dataset.latitude;
+            longInput.value = btn.dataset.longitude;
+            kodeInput.value = btn.dataset.kode_office;
 
             toggleForm(true);
         });

@@ -4,9 +4,21 @@
 
 @section('content')
 
-<!-- HERO FULLSCREEN IMAGE -->
-<section class="relative py-10 w-full h-screen flex items-center justify-center bg-white">
-    <img src="{{ asset('images/logo/pricelist.png') }}" alt="{{ __('messages.pricelist_title') }}" class="max-h-full max-w-full object-contain">
+<!-- HERO: 2 IMAGE PRICELIST -->
+<section class="relative py-10 w-full bg-white">
+    <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+
+        <!-- Pricelist 1 -->
+        <img src="{{ asset('images/logo/pricelist001.jpg') }}"
+             alt="Pricelist 1"
+             class="w-full rounded-xl shadow-md object-contain">
+
+        <!-- Pricelist 2 -->
+        <img src="{{ asset('images/logo/pricelist002.jpg') }}"
+             alt="Pricelist 2"
+             class="w-full rounded-xl shadow-md object-contain">
+
+    </div>
 </section>
 
 <!-- EXTRA CONTENT (CTA) -->
@@ -124,14 +136,8 @@
                 prevEl: '.swiper-button-prev',
             },
             breakpoints: {
-                640: {
-                    slidesPerView: 2.1,
-                    spaceBetween: 14,
-                },
-                768: {
-                    slidesPerView: 3.2,
-                    spaceBetween: 20,
-                }
+                640: { slidesPerView: 2.1, spaceBetween: 14 },
+                768: { slidesPerView: 3.2, spaceBetween: 20 }
             }
         });
     });

@@ -54,6 +54,11 @@ return [
     'color_navy' => 'Biru Dongker',
     'color_peach' => 'Peach',
     'color_red' => 'Merah',
+    'color_spotlight_fullcolor' => 'Spotlight Full Color',
+    'color_red_theater' => 'Red Theater',
+    'color_large_studio' => 'Large Studio',
+    'color_red_studio' => 'Red Studio',
+    'color_wide_studio' => 'Wide Studio',
 
     // Booking page
     'booking_title' => 'Self Photo Studio',

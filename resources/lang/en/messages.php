@@ -45,16 +45,21 @@ return [
     'opening_time' => '10.00 – 21.30',
 
     // Pricelist page
-    'pricelist_title' => 'Pricelist',
+    'pricelist_title' => 'Price List',
     'pricelist_cta_title' => 'Ready to Capture Your Best Moments?',
-    'pricelist_cta_text' => 'Book your self–portrait session today and create timeless memories with Anxietive. Choose your background, strike your pose, and let us handle the rest!',
+    'pricelist_cta_text' => 'Book your self-photo session today and create unforgettable memories with Anxietive. Choose your background, strike your best pose, and let us handle the rest!',
     'pricelist_cta_button' => 'Book Now',
     'color_white' => 'White',
     'color_grey' => 'Grey',
-    'color_navy' => 'Navy',
+    'color_navy' => 'Navy Blue',
     'color_peach' => 'Peach',
     'color_red' => 'Red',
-
+    'color_spotlight_fullcolor' => 'Spotlight Full Color',
+    'color_red_theater' => 'Red Theater',
+    'color_large_studio' => 'Large Studio',
+    'color_red_studio' => 'Red Studio',
+    'color_wide_studio' => 'Wide Studio',
+    
     // Booking page
     'booking_title' => 'Self Photo Studio',
     'booking_subtitle' => 'Pick your location, visit <span class="font-semibold text-gray-900">Anxietive</span> in your city, choose your favorite studio type, and create unforgettable memories. 📸',
