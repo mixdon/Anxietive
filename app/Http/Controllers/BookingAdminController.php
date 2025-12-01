@@ -7,40 +7,60 @@ use Illuminate\Http\Request;
 
 class BookingAdminController extends Controller
 {
-    /**
-     * Menampilkan daftar booking sesuai role admin.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        // Ambil data admin dari session
         $user = session('admin_user');
 
-        // Cek jika tidak ada user di session
         if (!$user) {
             return redirect()->route('admin.login')->with('error', 'Silakan login terlebih dahulu.');
         }
 
-        // Jika superadmin, tampilkan semua booking
-        if ($user->roles == 1) {
-            $bookings = Booking::with(['package.office', 'customer'])
-                ->latest()
-                ->paginate(10);
-        } else {
-            // Admin kantor hanya bisa lihat booking dari officenya
-            $bookings = Booking::whereHas('package', function ($query) use ($user) {
-                    $query->where('id_office', $user->office);
-                })
-                ->with(['package.office', 'customer'])
-                ->latest()
-                ->paginate(10);
+        // Query dasar
+        $query = Booking::with(['package.office', 'customer']);
+
+        // Role filtering
+        if ($user->roles == 2) {
+            $query->whereHas('package', function ($q) use ($user) {
+                $q->where('id_office', $user->office);
+            });
+        }
+        // SUPER_ADMIN (1) & OWNER (3) → tidak dibatasi
+
+        // Filter date range
+        if ($request->start_date) {
+            $query->whereDate('date', '>=', $request->start_date);
         }
 
-        return view('admin.data-booking', compact('bookings'));
+        if ($request->end_date) {
+            $query->whereDate('date', '<=', $request->end_date);
+        }
+
+        // Filter status
+        if ($request->status) {
+            $query->where('status', $request->status);
+        }
+
+        // Filter office (khusus hanya superadmin & owner bisa memilih)
+        if ($request->office_id) {
+            $query->whereHas('package', function ($q) use ($request) {
+                $q->where('id_office', $request->office_id);
+            });
+        }
+
+        $bookings = $query->latest()->paginate(10);
+
+        // Office list (role-based)
+        $offices = [];
+        if ($user->roles == 1 || $user->roles == 3) {
+            $offices = \App\Models\Office::orderBy('office_name')->get();
+        } else {
+            // Admin → hanya 1 kantor
+            $offices = \App\Models\Office::where('id', $user->office)->get();
+        }
+
+        return view('admin.data-booking', compact('bookings', 'offices'));
     }
 
-    /**
-     * Mengubah status booking.
-     */
     public function updateStatus(Request $request, $id)
     {
         $request->validate([

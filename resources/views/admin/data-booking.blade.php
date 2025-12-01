@@ -8,14 +8,87 @@
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-8">
         <h1 class="text-2xl font-semibold text-gray-800">Manage Bookings</h1>
+
+        <!-- FILTER BUTTON -->
+        <button onclick="document.getElementById('filterModal').classList.remove('hidden')"
+            class="mt-3 sm:mt-0 px-4 py-2 bg-purple-600 text-white rounded-lg text-sm hover:bg-purple-500 transition">
+            <i class="fa-solid fa-filter"></i> Filter
+        </button>
     </div>
 
     <!-- Success Message -->
     @if(session('success'))
-        <div class="mb-6 p-4 bg-green-100 border border-green-200 text-green-800 rounded-lg shadow-sm">
-            {{ session('success') }}
-        </div>
+    <div class="mb-6 p-4 bg-green-100 border border-green-200 text-green-800 rounded-lg shadow-sm">
+        {{ session('success') }}
+    </div>
     @endif
+
+    <!-- FILTER MODAL -->
+    <div id="filterModal" class="hidden fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center z-50">
+        <div class="bg-white p-6 rounded-xl w-full max-w-md relative">
+
+            <!-- Close Button -->
+            <button onclick="document.getElementById('filterModal').classList.add('hidden')"
+                class="absolute right-3 top-3 text-gray-500 hover:text-gray-700">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+
+            <h2 class="text-lg font-semibold mb-4">Filter Booking</h2>
+
+            <form method="GET" action="{{ route('admin.bookings.index') }}" class="space-y-4">
+
+                <div>
+                    <label class="text-sm font-medium">Start Date</label>
+                    <input type="date" name="start_date" class="w-full border px-3 py-2 rounded-lg"
+                        value="{{ request('start_date') }}">
+                </div>
+
+                <div>
+                    <label class="text-sm font-medium">End Date</label>
+                    <input type="date" name="end_date" class="w-full border px-3 py-2 rounded-lg"
+                        value="{{ request('end_date') }}">
+                </div>
+
+                <div>
+                    <label class="text-sm font-medium">Status</label>
+                    <select name="status" class="w-full border px-3 py-2 rounded-lg">
+                        <option value="">-- All Status --</option>
+
+                        <option value="pending" {{ request('status')=='pending'?'selected':'' }}>Pending</option>
+                        <option value="completed" {{ request('status')=='completed'?'selected':'' }}>Completed</option>
+                        <option value="cancelled" {{ request('status')=='cancelled'?'selected':'' }}>Cancelled</option>
+                        <option value="refund" {{ request('status')=='refund'?'selected':'' }}>Refund</option>
+                        <option value="draft" {{ request('status')=='draft'?'selected':'' }}>Draft</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="text-sm font-medium">Office</label>
+                    <select name="office_id" class="w-full border px-3 py-2 rounded-lg">
+                        <option value="">-- All Office --</option>
+                        @foreach($offices as $o)
+                        <option value="{{ $o->id }}" {{ request('office_id') == $o->id ? 'selected' : '' }}>
+                            {{ $o->office_name }}
+                        </option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="flex gap-3 mt-4">
+                    <button class="flex-1 bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-500 transition">
+                        Apply Filter
+                    </button>
+
+                    <!-- CLEAR FILTER BUTTON -->
+                    <a href="{{ route('admin.bookings.index') }}"
+                        class="flex-1 bg-gray-300 text-gray-800 py-2 rounded-lg hover:bg-gray-400 transition text-center">
+                        Clear
+                    </a>
+                </div>
+
+            </form>
+        </div>
+    </div>
 
     <!-- Table Container -->
     <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
@@ -52,166 +125,204 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-100 text-gray-700">
+
                     @forelse($bookings as $booking)
-                        <tr class="hover:bg-gray-50 transition">
-                            <td class="px-6 py-3">{{ $loop->iteration }}</td>
-                            <td class="px-6 py-3">
-                                <div class="font-medium">{{ $booking->customer->fullname ?? '-' }}</div>
-                                <div class="text-xs text-gray-500">{{ $booking->customer->email ?? '-' }}</div>
-                            </td>
-                            <td class="px-6 py-3">{{ $booking->package->judul_package ?? '-' }}</td>
-                            <td class="px-6 py-3">{{ $booking->package->office->office_name ?? '-' }}</td>
-                            <td class="px-6 py-3">{{ \Carbon\Carbon::parse($booking->date)->format('Y-m-d') }}</td>
-                            <td class="px-6 py-3">{{ \Carbon\Carbon::parse($booking->time)->format('H:i') }}</td>
+                    <tr class="hover:bg-gray-50 transition">
+                        <td class="px-6 py-3">{{ $loop->iteration }}</td>
 
-                            <td class="px-6 py-3">
-                                <span class="px-3 py-1 rounded-full text-xs font-semibold
-                                    @if($booking->status == 'pending') bg-yellow-100 text-yellow-700
-                                    @elseif($booking->status == 'completed') bg-green-100 text-green-700
-                                    @elseif($booking->status == 'cancelled') bg-red-100 text-red-700
-                                    @elseif($booking->status == 'refund') bg-blue-100 text-blue-700
-                                    @endif">
-                                    {{ ucfirst($booking->status) }}
-                                </span>
-                            </td>
+                        <td class="px-6 py-3">
+                            <div class="font-medium">{{ $booking->customer->fullname ?? '-' }}</div>
+                            <div class="text-xs text-gray-500">{{ $booking->customer->email ?? '-' }}</div>
+                        </td>
 
-                            <td class="px-6 py-3 text-center flex flex-col sm:flex-row gap-2 justify-center items-center">
-                                <!-- Update Status -->
-                                <form method="POST" action="{{ route('admin.bookings.updateStatus', $booking->id) }}" class="inline-flex items-center justify-center gap-2">
-                                    @csrf
-                                    <select name="status"
-                                        class="border border-gray-300 rounded-lg text-sm px-2 py-1 focus:ring-2 focus:ring-purple-400 focus:border-purple-400">
-                                        <option value="pending" {{ $booking->status=='pending' ? 'selected' : '' }}>Pending</option>
-                                        <option value="completed" {{ $booking->status=='completed' ? 'selected' : '' }}>Completed</option>
-                                        <option value="cancelled" {{ $booking->status=='cancelled' ? 'selected' : '' }}>Cancelled</option>
-                                        <option value="refund" {{ $booking->status=='refund' ? 'selected' : '' }}>Refund</option>
-                                    </select>
-                                    <button type="submit"
-                                        class="px-3 py-1 bg-purple-600 text-white rounded-lg text-xs hover:bg-purple-500 transition">
-                                        <i class="fa-solid fa-check"></i>
-                                    </button>
-                                </form>
+                        <td class="px-6 py-3">{{ $booking->package->judul_package ?? '-' }}</td>
+                        <td class="px-6 py-3">{{ $booking->package->office->office_name ?? '-' }}</td>
 
-                                <!-- View Transfer Proof -->
-                                <button onclick="openModal({{ $booking->id }})"
-                                    class="px-3 py-1 bg-blue-600 text-white rounded-lg text-xs hover:bg-blue-500 transition">
-                                    <i class="fa-solid fa-eye"></i>
+                        <td class="px-6 py-3">{{ \Carbon\Carbon::parse($booking->date)->format('Y-m-d') }}</td>
+                        <td class="px-6 py-3">{{ \Carbon\Carbon::parse($booking->time)->format('H:i') }}</td>
+
+                        <td class="px-6 py-3">
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold
+                                @if($booking->status == 'pending') bg-yellow-100 text-yellow-700
+                                @elseif($booking->status == 'completed') bg-green-100 text-green-700
+                                @elseif($booking->status == 'cancelled') bg-red-100 text-red-700
+                                @elseif($booking->status == 'refund') bg-blue-100 text-blue-700
+                                @elseif($booking->status == 'draft') bg-gray-200 text-gray-700
+                                @endif">
+                                {{ ucfirst($booking->status) }}
+                            </span>
+                        </td>
+
+                        <td class="px-6 py-3 text-center flex flex-col sm:flex-row gap-2 justify-center items-center">
+
+                            <!-- Update Status -->
+                            <form method="POST" action="{{ route('admin.bookings.updateStatus', $booking->id) }}"
+                                class="inline-flex items-center justify-center gap-2">
+                                @csrf
+                                <select name="status"
+                                    class="border border-gray-300 rounded-lg text-sm px-2 py-1 focus:ring-2 focus:ring-purple-400 focus:border-purple-400">
+                                    <option value="pending" {{ $booking->status=='pending' ? 'selected' : '' }}>Pending
+                                    </option>
+                                    <option value="completed" {{ $booking->status=='completed' ? 'selected' : '' }}>
+                                        Completed</option>
+                                    <option value="cancelled" {{ $booking->status=='cancelled' ? 'selected' : '' }}>
+                                        Cancelled</option>
+                                    <option value="refund" {{ $booking->status=='refund' ? 'selected' : '' }}>Refund
+                                    </option>
+                                    <option value="draft" {{ $booking->status=='draft' ? 'selected' : '' }}>Draft
+                                    </option>
+                                </select>
+
+                                <button type="submit"
+                                    class="px-3 py-1 bg-purple-600 text-white rounded-lg text-xs hover:bg-purple-500 transition">
+                                    <i class="fa-solid fa-check"></i>
                                 </button>
-                            </td>
-                        </tr>
+                            </form>
 
-                        <!-- Modal -->
-                        <div id="modal-{{ $booking->id }}"
-                            class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
-                            <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full relative">
-                                <button onclick="closeModal({{ $booking->id }})"
-                                    class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
-                                    <i class="fa-solid fa-xmark text-lg"></i>
-                                </button>
+                            <!-- View Proof -->
+                            <button onclick="openModal({{ $booking->id }})"
+                                class="px-3 py-1 bg-blue-600 text-white rounded-lg text-xs hover:bg-blue-500 transition">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </td>
+                    </tr>
 
-                                <h2 class="text-lg font-semibold text-gray-800 mb-6 border-b pb-2">
-                                    Booking Details
-                                </h2>
+                    <!-- Modal Transfer Proof -->
+                    <div id="modal-{{ $booking->id }}"
+                        class="hidden fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center z-50">
+                        <div class="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full relative">
+                            <button onclick="closeModal({{ $booking->id }})"
+                                class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
+                                <i class="fa-solid fa-xmark text-lg"></i>
+                            </button>
 
-                                <div class="text-sm text-gray-700 space-y-2 leading-relaxed">
-                                    <div class="flex"><span class="font-semibold w-28">Customer</span><span>:</span><span class="ml-1">{{ $booking->customer->fullname ?? '-' }}</span></div>
-                                    <div class="flex"><span class="font-semibold w-28">Email</span><span>:</span><span class="ml-1">{{ $booking->customer->email ?? '-' }}</span></div>
-                                    <div class="flex"><span class="font-semibold w-28">Package</span><span>:</span><span class="ml-1">{{ $booking->package->judul_package ?? '-' }}</span></div>
-                                    <div class="flex"><span class="font-semibold w-28">Office</span><span>:</span><span class="ml-1">{{ $booking->package->office->office_name ?? '-' }}</span></div>
-                                    <div class="flex"><span class="font-semibold w-28">Date</span><span>:</span><span class="ml-1">{{ \Carbon\Carbon::parse($booking->date)->format('Y-m-d') }}</span></div>
-                                    <div class="flex"><span class="font-semibold w-28">Time</span><span>:</span><span class="ml-1">{{ \Carbon\Carbon::parse($booking->time)->format('H:i') }}</span></div>
-                                    <div class="flex"><span class="font-semibold w-28">Status</span><span>:</span><span class="ml-1">{{ ucfirst($booking->status) }}</span></div>
-                                </div>
+                            <h2 class="text-lg font-semibold text-gray-800 mb-6 border-b pb-2">
+                                Booking Details
+                            </h2>
 
-                                @if($booking->img_bukti_trf)
-                                    <div class="mt-6 text-center">
-                                        <p class="font-semibold mb-3">Bukti Transfer:</p>
-                                        <img src="{{ asset('storage/' . $booking->img_bukti_trf) }}" 
-                                            alt="Bukti Transfer"
-                                            class="rounded-xl shadow-md max-h-64 mx-auto border border-gray-200">
-                                    </div>
-                                @else
-                                    <p class="text-gray-500 mt-4 text-center italic">Tidak ada bukti transfer.</p>
-                                @endif
+                            <div class="text-sm text-gray-700 space-y-2 leading-relaxed">
+                                <div class="flex"><span class="font-semibold w-28">Customer</span><span>:</span><span
+                                        class="ml-1">{{ $booking->customer->fullname }}</span></div>
+                                <div class="flex"><span class="font-semibold w-28">Email</span><span>:</span><span
+                                        class="ml-1">{{ $booking->customer->email }}</span></div>
+                                <div class="flex"><span class="font-semibold w-28">Package</span><span>:</span><span
+                                        class="ml-1">{{ $booking->package->judul_package }}</span></div>
+                                <div class="flex"><span class="font-semibold w-28">Office</span><span>:</span><span
+                                        class="ml-1">{{ $booking->package->office->office_name }}</span></div>
+                                <div class="flex"><span class="font-semibold w-28">Date</span><span>:</span><span
+                                        class="ml-1">{{ $booking->date }}</span></div>
+                                <div class="flex"><span class="font-semibold w-28">Time</span><span>:</span><span
+                                        class="ml-1">{{ $booking->time }}</span></div>
+                                <div class="flex"><span class="font-semibold w-28">Status</span><span>:</span><span
+                                        class="ml-1">{{ ucfirst($booking->status) }}</span></div>
                             </div>
+
+                            @if($booking->img_bukti_trf)
+                            <div class="mt-6 text-center">
+                                <p class="font-semibold mb-3">Bukti Transfer:</p>
+                                <img src="{{ asset('storage/' . $booking->img_bukti_trf) }}" alt="Bukti Transfer"
+                                    class="rounded-xl shadow-md max-h-64 mx-auto border border-gray-200">
+                            </div>
+                            @else
+                            <p class="text-gray-500 mt-4 text-center italic">Tidak ada bukti transfer.</p>
+                            @endif
                         </div>
+                    </div>
+
                     @empty
-                        <tr><td colspan="8" class="text-center py-6 text-gray-500">No bookings found.</td></tr>
+                    <tr>
+                        <td colspan="8" class="text-center py-6 text-gray-500">No bookings found.</td>
+                    </tr>
                     @endforelse
+
                 </tbody>
             </table>
         </div>
 
         <!-- Pagination -->
-        <div id="paginationContainer" class="flex flex-wrap justify-between items-center p-4 border-t border-gray-200 text-sm text-gray-600">
+        <div id="paginationContainer"
+            class="flex flex-wrap justify-between items-center p-4 border-t border-gray-200 text-sm text-gray-600">
             <div id="showingInfo" class="mb-2 sm:mb-0"></div>
             <div class="flex items-center gap-2">
-                <button id="prevPage" class="px-3 py-1 border rounded-md hover:bg-gray-100 disabled:opacity-50"><</button>
+                <button id="prevPage" class="px-3 py-1 border rounded-md hover:bg-gray-100 disabled:opacity-50">
+                    <</button>
                 <span id="pageInfo"></span>
-                <button id="nextPage" class="px-3 py-1 border rounded-md hover:bg-gray-100 disabled:opacity-50">></button>
+                <button id="nextPage"
+                    class="px-3 py-1 border rounded-md hover:bg-gray-100 disabled:opacity-50">></button>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Script Modal + Search + Pagination -->
+<!-- Script -->
 <script>
-document.addEventListener('DOMContentLoaded', () => {
-    const tableBody = document.querySelector('#bookingTable tbody');
-    const rows = Array.from(tableBody.querySelectorAll('tr'));
-    const lengthMenu = document.getElementById('lengthMenu');
-    const paginationInfo = document.getElementById('pageInfo');
-    const showingInfo = document.getElementById('showingInfo');
-    const prevBtn = document.getElementById('prevPage');
-    const nextBtn = document.getElementById('nextPage');
-    const searchInput = document.getElementById('tableSearch');
+    document.addEventListener('DOMContentLoaded', () => {
 
-    let currentPage = 1;
-    let rowsPerPage = parseInt(lengthMenu.value);
-    let filteredRows = [...rows];
+        const tableBody = document.querySelector('#bookingTable tbody');
+        const rows = Array.from(tableBody.querySelectorAll('tr'));
+        const lengthMenu = document.getElementById('lengthMenu');
+        const paginationInfo = document.getElementById('pageInfo');
+        const showingInfo = document.getElementById('showingInfo');
+        const prevBtn = document.getElementById('prevPage');
+        const nextBtn = document.getElementById('nextPage');
+        const searchInput = document.getElementById('tableSearch');
 
-    function renderTable() {
-        // Hitung total halaman berdasarkan hasil pencarian
-        const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
-        currentPage = Math.min(currentPage, totalPages || 1);
+        let currentPage = 1;
+        let rowsPerPage = parseInt(lengthMenu.value);
+        let filteredRows = [...rows];
 
-        // Sembunyikan semua baris, tampilkan hanya sesuai halaman aktif
-        rows.forEach(row => row.style.display = 'none');
-        const start = (currentPage - 1) * rowsPerPage;
-        const end = start + rowsPerPage;
-        filteredRows.slice(start, end).forEach(row => row.style.display = '');
+        function renderTable() {
+            const totalPages = Math.ceil(filteredRows.length / rowsPerPage);
+            currentPage = Math.min(currentPage, totalPages || 1);
 
-        // Update informasi pagination
-        paginationInfo.textContent = `Page ${currentPage} of ${totalPages || 1}`;
-        showingInfo.textContent = filteredRows.length
-            ? `Showing ${start + 1}–${Math.min(end, filteredRows.length)} of ${filteredRows.length} entries`
-            : 'No entries found';
-        prevBtn.disabled = currentPage === 1;
-        nextBtn.disabled = currentPage === totalPages || totalPages === 0;
-    }
+            rows.forEach(row => row.style.display = 'none');
+            const start = (currentPage - 1) * rowsPerPage;
+            const end = start + rowsPerPage;
+            filteredRows.slice(start, end).forEach(row => row.style.display = '');
 
-    // Filter pencarian
-    searchInput.addEventListener('input', () => {
-        const query = searchInput.value.toLowerCase();
-        filteredRows = rows.filter(row => row.innerText.toLowerCase().includes(query));
-        currentPage = 1;
+            paginationInfo.textContent = `Page ${currentPage} of ${totalPages || 1}`;
+
+            showingInfo.textContent = filteredRows.length ?
+                `Showing ${start + 1}–${Math.min(end, filteredRows.length)} of ${filteredRows.length} entries` :
+                'No entries found';
+
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages || totalPages === 0;
+        }
+
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase();
+            filteredRows = rows.filter(row => row.innerText.toLowerCase().includes(query));
+            currentPage = 1;
+            renderTable();
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable();
+            }
+        });
+        nextBtn.addEventListener('click', () => {
+            currentPage++;
+            renderTable();
+        });
+        lengthMenu.addEventListener('change', e => {
+            rowsPerPage = parseInt(e.target.value);
+            currentPage = 1;
+            renderTable();
+        });
+
         renderTable();
     });
 
-    // Navigasi halaman
-    prevBtn.addEventListener('click', () => { if (currentPage > 1) { currentPage--; renderTable(); } });
-    nextBtn.addEventListener('click', () => { currentPage++; renderTable(); });
-    lengthMenu.addEventListener('change', e => { rowsPerPage = parseInt(e.target.value); currentPage = 1; renderTable(); });
+    function openModal(id) {
+        document.getElementById(`modal-${id}`).classList.remove('hidden');
+    }
 
-    renderTable();
-});
-
-// Modal
-function openModal(id) {
-    document.getElementById(`modal-${id}`).classList.remove('hidden');
-}
-function closeModal(id) {
-    document.getElementById(`modal-${id}`).classList.add('hidden');
-}
+    function closeModal(id) {
+        document.getElementById(`modal-${id}`).classList.add('hidden');
+    }
 </script>
+
 @endsection

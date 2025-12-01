@@ -23,12 +23,15 @@ class Booking extends Model
         'time',
         'img_bukti_trf',
         'status',
+        'kode_invoice',
+        'no_urut',
+        'office_id',
     ];
 
     // Gunakan cast yang sesuai tipe kolom sebenarnya
     protected $casts = [
-        'date' => 'date:Y-m-d',  // hanya tampil tanggal
-        'time' => 'string',      // simpan sebagai string (karena kolom di DB tipe TIME, bukan DATETIME)
+        'date' => 'date:Y-m-d',
+        'time' => 'string',
     ];
 
     // Relasi ke package
@@ -43,11 +46,20 @@ class Booking extends Model
         return $this->belongsTo(Customer::class, 'customer_id');
     }
 
-    public function scopeCompleted($query){
-    return $query->where('status','completed');
+    // Relasi ke office
+    public function office()
+    {
+        return $this->belongsTo(Office::class, 'office_id');
     }
 
-    public function scopePending($query){
-        return $query->where('status','pending');
+    // Scope untuk status
+    public function scopeCompleted($query)
+    {
+        return $query->where('status', 'completed');
+    }
+
+    public function scopePending($query)
+    {
+        return $query->where('status', 'pending');
     }
 }

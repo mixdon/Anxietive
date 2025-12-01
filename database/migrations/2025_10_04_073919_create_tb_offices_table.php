@@ -10,8 +10,18 @@ return new class extends Migration
     {
         Schema::create('tb_offices', function (Blueprint $table) {
             $table->id();
+
             $table->string('office_name', 200)->nullable();
             $table->string('address', 300)->nullable();
+
+            $table->string('email_kantor', 200)->nullable();
+            $table->string('no_wa_kantor', 100)->nullable();
+
+            $table->string('latitude', 100)->nullable();
+            $table->string('longitude', 100)->nullable();
+
+            $table->string('kode_office', 100)->nullable();
+
             $table->timestamps();
         });
     }

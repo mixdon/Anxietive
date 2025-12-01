@@ -23,4 +23,9 @@ class Office extends Model
     {
         return $this->hasMany(Package::class, 'id_office');
     }
+
+    public function bookings()
+    {
+        return $this->hasMany(Booking::class, 'office_id');
+    }
 }
